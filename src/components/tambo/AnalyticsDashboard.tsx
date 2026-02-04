@@ -1,6 +1,16 @@
 import { AnalyticsDashboardProps } from "./AnalyticsDashboardSchema";
 
 export function AnalyticsDashboard({ stats, recentActivity, topCompanies }: AnalyticsDashboardProps) {
+  // Provide default values if stats is undefined
+  const safeStats = stats || {
+    totalContacts: 0,
+    activeContacts: 0,
+    prospects: 0,
+    customers: 0,
+    pendingTasks: 0,
+    overdueTasks: 0,
+  };
+
   return (
     <div className="space-y-6">
       {/* Stats Grid */}
@@ -14,7 +24,7 @@ export function AnalyticsDashboard({ stats, recentActivity, topCompanies }: Anal
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Total Contacts</p>
-              <p className="text-2xl font-semibold text-gray-900">{stats.totalContacts}</p>
+              <p className="text-2xl font-semibold text-gray-900">{safeStats.totalContacts}</p>
             </div>
           </div>
         </div>
@@ -28,7 +38,7 @@ export function AnalyticsDashboard({ stats, recentActivity, topCompanies }: Anal
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Active Contacts</p>
-              <p className="text-2xl font-semibold text-gray-900">{stats.activeContacts}</p>
+              <p className="text-2xl font-semibold text-gray-900">{safeStats.activeContacts}</p>
             </div>
           </div>
         </div>
@@ -42,7 +52,7 @@ export function AnalyticsDashboard({ stats, recentActivity, topCompanies }: Anal
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Prospects</p>
-              <p className="text-2xl font-semibold text-gray-900">{stats.prospects}</p>
+              <p className="text-2xl font-semibold text-gray-900">{safeStats.prospects}</p>
             </div>
           </div>
         </div>
@@ -56,7 +66,7 @@ export function AnalyticsDashboard({ stats, recentActivity, topCompanies }: Anal
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Customers</p>
-              <p className="text-2xl font-semibold text-gray-900">{stats.customers}</p>
+              <p className="text-2xl font-semibold text-gray-900">{safeStats.customers}</p>
             </div>
           </div>
         </div>
@@ -69,16 +79,16 @@ export function AnalyticsDashboard({ stats, recentActivity, topCompanies }: Anal
           <div className="space-y-3">
             <div className="flex justify-between items-center">
               <span className="text-gray-600">Pending Tasks</span>
-              <span className="font-semibold text-blue-600">{stats.pendingTasks}</span>
+              <span className="font-semibold text-blue-600">{safeStats.pendingTasks}</span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-gray-600">Overdue Tasks</span>
-              <span className="font-semibold text-red-600">{stats.overdueTasks}</span>
+              <span className="font-semibold text-red-600">{safeStats.overdueTasks}</span>
             </div>
           </div>
         </div>
 
-        {topCompanies && (
+        {topCompanies && topCompanies.length > 0 && (
           <div className="bg-white rounded-lg shadow-md p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Top Companies</h3>
             <div className="space-y-3">
@@ -94,7 +104,7 @@ export function AnalyticsDashboard({ stats, recentActivity, topCompanies }: Anal
       </div>
 
       {/* Recent Activity */}
-      {recentActivity && (
+      {recentActivity && recentActivity.length > 0 && (
         <div className="bg-white rounded-lg shadow-md p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h3>
           <div className="space-y-4">

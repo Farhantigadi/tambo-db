@@ -16,9 +16,11 @@ interface ContactListProps {
 }
 
 export default function ContactList({
-  contacts,
+  contacts = [],
   title = "Contacts",
 }: ContactListProps) {
+  const safeContacts = contacts || [];
+  
   const handleEmailClick = (email: string) => {
     window.location.href = `mailto:${email}`;
   };
@@ -27,11 +29,11 @@ export default function ContactList({
     <div className="bg-white rounded-lg shadow-md border border-gray-200 p-6 max-w-4xl">
       <h3 className="text-lg font-semibold text-gray-800 mb-4">{title}</h3>
 
-      {contacts.length === 0 ? (
+      {safeContacts.length === 0 ? (
         <p className="text-gray-500 text-center py-4">No contacts found.</p>
       ) : (
         <div className="space-y-3">
-          {contacts.map((contact) => (
+          {safeContacts.map((contact) => (
             <div
               key={contact.id}
               className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"

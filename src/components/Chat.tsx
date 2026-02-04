@@ -1,8 +1,9 @@
 "use client";
 
 import { useTamboThread, useTamboThreadInput } from "@tambo-ai/react";
-import { Send, Bot, User } from "lucide-react";
+import { Send, Bot, User, Sparkles } from "lucide-react";
 import { useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Chat() {
   const { thread } = useTamboThread();
@@ -24,190 +25,252 @@ export default function Chat() {
     }
   };
 
-  return (
-    <div className="flex flex-col h-full bg-white rounded-lg shadow-sm border border-gray-200">
-      {/* Chat Header */}
-      <div className="flex items-center gap-3 p-4 border-b border-gray-100">
-        <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-          <Bot className="w-4 h-4 text-white" />
-        </div>
-        <div>
-          <h3 className="font-medium text-gray-900">CRM Assistant</h3>
-          <p className="text-xs text-gray-500">Online</p>
-        </div>
-      </div>
+  const exampleQueries = [
+    "Add John Doe from Microsoft",
+    "Show all my contacts",
+    "Create a task to call Sarah",
+    "Show analytics dashboard"
+  ];
 
+  return (
+    <div className="flex flex-col h-full bg-gradient-to-b from-white to-gray-50/50">
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto p-6 space-y-6">
         {thread.messages.length === 0 && (
-          <div className="text-center py-8">
-            <Bot className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-            <p className="text-gray-500 text-sm">
-              Start a conversation to manage your contacts
+          <motion.div 
+            className="text-center py-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+              <Sparkles className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              Welcome to your AI CRM Assistant
+            </h3>
+            <p className="text-gray-600 mb-8 max-w-md mx-auto leading-relaxed">
+              I can help you manage contacts, create tasks, and provide insights. 
+              Just tell me what you'd like to do in natural language.
             </p>
-            <p className="text-gray-400 text-xs mt-1">
-              Try: &quot;Add a new contact&quot; or &quot;Show all
-              contacts&quot;
-            </p>
-          </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-lg mx-auto">
+              {exampleQueries.map((query, index) => (
+                <motion.button
+                  key={index}
+                  onClick={() => setValue(query)}
+                  className="p-3 text-left bg-white border border-gray-200 rounded-xl hover:border-blue-300 hover:shadow-md transition-all duration-200 text-sm text-gray-700 hover:text-gray-900"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  "{query}"
+                </motion.button>
+              ))}
+            </div>
+          </motion.div>
         )}
 
-        {thread.messages.map((message) => {
-          // Check if message should be hidden
-          const shouldHideMessage = Array.isArray(message.content)
-            ? message.content.every(
-                (part) =>
-                  part.type === "text" &&
-                  part.text &&
-                  (part.text.trim() === "}" ||
-                    part.text.includes('{"success"') ||
-                    part.text.includes('{"error"') ||
-                    part.text.trim() === ""),
-              )
-            : String(message.content).trim() === "}" ||
-              String(message.content).includes('{"success"') ||
-              String(message.content).includes('{"error"') ||
-              String(message.content).trim() === "";
+        <AnimatePresence>
+          {thread.messages.map((message, index) => {
+            // Check if message should be hidden
+            const shouldHideMessage = Array.isArray(message.content)
+              ? message.content.every(
+                  (part) =>
+                    part.type === "text" &&
+                    part.text &&
+                    (part.text.trim() === "}" ||
+                      part.text.includes('{"success"') ||
+                      part.text.includes('{"error"') ||
+                      part.text.trim() === ""),
+                )
+              : String(message.content).trim() === "}" ||
+                String(message.content).includes('{"success"') ||
+                String(message.content).includes('{"error"') ||
+                String(message.content).trim() === "";
 
-          // Skip message if it should be hidden and has no component
-          if (shouldHideMessage && !message.renderedComponent) {
-            return null;
-          }
+            // Skip message if it should be hidden and has no component
+            if (shouldHideMessage && !message.renderedComponent) {
+              return null;
+            }
 
-          return (
-            <div
-              key={message.id}
-              className={`flex gap-3 animate-in slide-in-from-bottom-2 duration-300 ${
-                message.role === "user" ? "flex-row-reverse" : ""
-              }`}
-            >
-              {/* Avatar */}
-              <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                  message.role === "user"
-                    ? "bg-blue-500"
-                    : "bg-gray-100 border border-gray-200"
+            return (
+              <motion.div
+                key={message.id}
+                className={`flex gap-4 ${
+                  message.role === "user" ? "flex-row-reverse" : ""
                 }`}
+                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                transition={{ duration: 0.4, delay: index * 0.05 }}
               >
-                {message.role === "user" ? (
-                  <User className="w-4 h-4 text-white" />
-                ) : (
-                  <Bot className="w-4 h-4 text-gray-600" />
-                )}
-              </div>
+                {/* Avatar */}
+                <div
+                  className={`w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm ${
+                    message.role === "user"
+                      ? "bg-gradient-to-r from-blue-500 to-indigo-500"
+                      : "bg-white border-2 border-gray-100"
+                  }`}
+                >
+                  {message.role === "user" ? (
+                    <User className="w-5 h-5 text-white" />
+                  ) : (
+                    <Bot className="w-5 h-5 text-gray-600" />
+                  )}
+                </div>
 
-              {/* Message Content */}
-              <div
-                className={`max-w-[70%] ${
-                  message.role === "user" ? "items-end" : "items-start"
-                } flex flex-col gap-1`}
-              >
-                {!shouldHideMessage && (
-                  <div
-                    className={`px-4 py-2 rounded-2xl ${
-                      message.role === "user"
-                        ? "bg-blue-500 text-white rounded-br-md"
-                        : "bg-gray-100 text-gray-900 rounded-bl-md"
-                    }`}
-                  >
-                    {Array.isArray(message.content)
-                      ? message.content.map((part, i) => {
-                          if (part.type === "text" && part.text) {
-                            // Hide unwanted content
+                {/* Message Content */}
+                <div
+                  className={`max-w-[75%] ${
+                    message.role === "user" ? "items-end" : "items-start"
+                  } flex flex-col gap-2`}
+                >
+                  {!shouldHideMessage && (
+                    <motion.div
+                      className={`px-5 py-3 rounded-2xl shadow-sm ${
+                        message.role === "user"
+                          ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-br-lg"
+                          : "bg-white border border-gray-200 text-gray-900 rounded-bl-lg"
+                      }`}
+                      initial={{ scale: 0.9, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ duration: 0.3, delay: 0.1 }}
+                    >
+                      {Array.isArray(message.content)
+                        ? message.content.map((part, i) => {
+                            if (part.type === "text" && part.text) {
+                              // Hide unwanted content
+                              if (
+                                part.text.includes('{"success"') ||
+                                part.text.includes('{"error"') ||
+                                part.text.trim() === "}" ||
+                                part.text.trim() === ""
+                              ) {
+                                return null;
+                              }
+                              return (
+                                <p key={i} className="text-sm leading-relaxed">
+                                  {part.text}
+                                </p>
+                              );
+                            }
+                            return null;
+                          })
+                        : (() => {
+                            const content = String(message.content);
                             if (
-                              part.text.includes('{"success"') ||
-                              part.text.includes('{"error"') ||
-                              part.text.trim() === "}" ||
-                              part.text.trim() === ""
+                              content.includes('{"success"') ||
+                              content.includes('{"error"') ||
+                              content.trim() === "}" ||
+                              content.trim() === ""
                             ) {
                               return null;
                             }
                             return (
-                              <p key={i} className="text-sm leading-relaxed">
-                                {part.text}
-                              </p>
+                              <p className="text-sm leading-relaxed">{content}</p>
                             );
-                          }
-                          return null;
-                        })
-                      : (() => {
-                          const content = String(message.content);
-                          if (
-                            content.includes('{"success"') ||
-                            content.includes('{"error"') ||
-                            content.trim() === "}" ||
-                            content.trim() === ""
-                          ) {
-                            return null;
-                          }
-                          return (
-                            <p className="text-sm leading-relaxed">{content}</p>
-                          );
-                        })()}
-                  </div>
-                )}
+                          })()}
+                    </motion.div>
+                  )}
 
-                {/* Rendered Component */}
-                {message.renderedComponent && (
-                  <div className="mt-2 animate-in fade-in duration-500">
-                    {message.renderedComponent}
-                  </div>
-                )}
+                  {/* Rendered Component */}
+                  {message.renderedComponent && (
+                    <motion.div 
+                      className="mt-2 w-full"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: 0.2 }}
+                    >
+                      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+                        {message.renderedComponent}
+                      </div>
+                    </motion.div>
+                  )}
 
-                {/* Timestamp */}
-                {(!shouldHideMessage || message.renderedComponent) && (
-                  <p className="text-xs text-gray-400 px-2">
-                    {new Date(message.createdAt).toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </p>
-                )}
-              </div>
-            </div>
-          );
-        })}
+                  {/* Timestamp */}
+                  {(!shouldHideMessage || message.renderedComponent) && (
+                    <p className="text-xs text-gray-400 px-2 mt-1">
+                      {new Date(message.createdAt).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </p>
+                  )}
+                </div>
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
 
         {/* Typing Indicator */}
-        {isPending && (
-          <div className="flex gap-3 animate-in slide-in-from-bottom-2 duration-300">
-            <div className="w-8 h-8 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center">
-              <Bot className="w-4 h-4 text-gray-600" />
-            </div>
-            <div className="bg-gray-100 rounded-2xl rounded-bl-md px-4 py-2">
-              <div className="flex gap-1">
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-100"></div>
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-200"></div>
+        <AnimatePresence>
+          {isPending && (
+            <motion.div 
+              className="flex gap-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="w-10 h-10 rounded-2xl bg-white border-2 border-gray-100 flex items-center justify-center shadow-sm">
+                <Bot className="w-5 h-5 text-gray-600" />
               </div>
-            </div>
-          </div>
-        )}
+              <div className="bg-white border border-gray-200 rounded-2xl rounded-bl-lg px-5 py-3 shadow-sm">
+                <div className="flex gap-1">
+                  <motion.div 
+                    className="w-2 h-2 bg-gray-400 rounded-full"
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 0.6, repeat: Infinity, delay: 0 }}
+                  />
+                  <motion.div 
+                    className="w-2 h-2 bg-gray-400 rounded-full"
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 0.6, repeat: Infinity, delay: 0.2 }}
+                  />
+                  <motion.div 
+                    className="w-2 h-2 bg-gray-400 rounded-full"
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 0.6, repeat: Infinity, delay: 0.4 }}
+                  />
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         <div ref={messagesEndRef} />
       </div>
 
       {/* Input */}
-      <div className="p-4 border-t border-gray-100">
-        <form onSubmit={handleSubmit} className="flex gap-3 items-end">
+      <div className="p-6 bg-white/80 backdrop-blur-sm border-t border-gray-200/50">
+        <form onSubmit={handleSubmit} className="flex gap-4 items-end">
           <div className="flex-1 relative">
             <input
               type="text"
               value={value}
               onChange={(e) => setValue(e.target.value)}
-              placeholder="Type a message..."
-              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm"
+              placeholder="Ask me anything about your contacts..."
+              className="w-full px-6 py-4 bg-white border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm shadow-sm transition-all duration-200 hover:border-gray-300"
               disabled={isPending}
             />
           </div>
-          <button
+          <motion.button
             type="submit"
             disabled={isPending || !value.trim()}
-            className="w-10 h-10 bg-black hover:bg-gray-800 disabled:bg-gray-300 rounded-full flex items-center justify-center transition-colors duration-200"
+            className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 disabled:from-gray-300 disabled:to-gray-300 rounded-2xl flex items-center justify-center transition-all duration-200 shadow-lg hover:shadow-xl"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            <Send className="w-4 h-4 text-white" />
-          </button>
+            <Send className="w-5 h-5 text-white" />
+          </motion.button>
         </form>
+        
+        <p className="text-xs text-gray-500 mt-3 text-center">
+          Try: "Add Sarah from Tesla" • "Show analytics" • "Create a reminder"
+        </p>
       </div>
     </div>
   );

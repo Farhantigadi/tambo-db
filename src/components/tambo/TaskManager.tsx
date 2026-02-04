@@ -1,7 +1,8 @@
 import { TaskManagerProps } from "./TaskManagerSchema";
 
-export function TaskManager({ tasks, showCompleted = false }: TaskManagerProps) {
-  const filteredTasks = showCompleted ? tasks : tasks.filter(task => !task.completed);
+export function TaskManager({ tasks = [], showCompleted = false }: TaskManagerProps) {
+  const safeTasks = tasks || [];
+  const filteredTasks = showCompleted ? safeTasks : safeTasks.filter(task => !task.completed);
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">

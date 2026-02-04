@@ -1,6 +1,7 @@
 import { ContactCardProps } from "./ContactCardSchema";
 
-export function ContactCard({ contacts, viewType = "card" }: ContactCardProps) {
+export function ContactCard({ contacts = [], viewType = "card" }: ContactCardProps) {
+  const safeContacts = contacts || [];
   if (viewType === "table") {
     return (
       <div className="overflow-x-auto">
@@ -15,7 +16,7 @@ export function ContactCard({ contacts, viewType = "card" }: ContactCardProps) {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {contacts.map((contact) => (
+            {safeContacts.map((contact) => (
               <tr key={contact.id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="font-medium text-gray-900">{contact.name}</div>
@@ -47,7 +48,7 @@ export function ContactCard({ contacts, viewType = "card" }: ContactCardProps) {
   if (viewType === "compact") {
     return (
       <div className="space-y-2">
-        {contacts.map((contact) => (
+        {safeContacts.map((contact) => (
           <div key={contact.id} className="flex items-center justify-between p-3 bg-white border rounded-lg hover:shadow-sm">
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-medium">
@@ -71,7 +72,7 @@ export function ContactCard({ contacts, viewType = "card" }: ContactCardProps) {
   // Default card view
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {contacts.map((contact) => (
+      {safeContacts.map((contact) => (
         <div key={contact.id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
           <div className="flex items-center space-x-4 mb-4">
             <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
