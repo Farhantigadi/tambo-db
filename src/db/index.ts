@@ -19,15 +19,52 @@ export const db = drizzle(poolConnection, { schema, mode: "default" });
 export async function initDb() {
   const conn = await poolConnection.getConnection();
   try {
+    // Create contacts table
     await conn.execute(`
       CREATE TABLE IF NOT EXISTS contacts (
         id INT AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         email VARCHAR(255) NOT NULL,
+        phone VARCHAR(50),
         company VARCHAR(255),
-        notes TEXT
+        position VARCHAR(255),
+        notes TEXT,
+        status ENUM('active', 'inactive', 'prospect', 'customer') DEFAULT 'prospect',
+        last_contact_date DATE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
       )
     `);
+
+    // Create tasks table
+    await conn.execute(`
+      CREATE TABLE IF NOT EXISTS tasks (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        contact_id INT,
+        title VARCHAR(255) NOT NULL,
+        description TEXT,
+        due_date TIMESTAMP NULL,
+        completed BOOLEAN DEFAULT FALSE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (contact_id) REFERENCES contacts(id) ON DELETE SET NULL
+      )
+    `);
+
+    // Create interactions table
+    await conn.execute(`
+      CREATE TABLE IF NOT EXISTS interactions (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        contact_id INT,
+        type ENUM('call', 'email', 'meeting', 'note') NOT NULL,
+        description TEXT,
+        interaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (contact_id) REFERENCES contacts(id) ON DELETE CASCADE
+      )
+    `);
+
+    console.log('Database tables initialized successfully');
+  } catch (error) {
+    console.error('Error initializing database:', error);
   } finally {
     conn.release();
   }

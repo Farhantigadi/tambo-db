@@ -109,79 +109,8 @@ export default function Home() {
       >
         <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-100">
           <Navbar onLogoClick={() => setShowChat(false)} />
-          
-          {/* Futuristic AI Chat Interface */}
-          <div className="flex flex-col items-center justify-center min-h-screen px-4 -mt-20">
-            <div className="w-full max-w-4xl flex flex-col items-center text-center">
-              {/* AI Avatar */}
-              <div className="relative mb-12">
-                <div className="absolute inset-0 bg-gradient-to-r from-[#2b4bee]/20 to-purple-500/20 scale-150 blur-3xl opacity-50 rounded-full"></div>
-                <div className="relative w-24 h-24 flex items-center justify-center rounded-full border border-gray-200 bg-white/80 backdrop-blur-xl shadow-2xl">
-                  <Zap className="w-12 h-12 text-[#2b4bee]" />
-                </div>
-              </div>
-              
-              {/* Main Heading */}
-              <h1 className="text-5xl md:text-7xl font-light tracking-tight text-gray-900 mb-6">
-                How can <span className="font-bold text-[#2b4bee]">Tambo</span> assist today?
-              </h1>
-              
-              <p className="text-gray-500 text-lg md:text-xl font-light max-w-2xl leading-relaxed mb-12">
-                Operationalizing your CRM data with high-fidelity neural intelligence.
-              </p>
-              
-              {/* Command Chips */}
-              <div className="flex flex-wrap justify-center gap-3 max-w-3xl mb-16">
-                <button className="bg-white/60 backdrop-blur-md border border-gray-200 text-gray-600 hover:text-gray-900 hover:bg-white/80 hover:border-[#2b4bee]/30 px-5 py-2.5 rounded-full text-xs font-medium hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 shadow-sm">
-                  <Users className="w-4 h-4" />
-                  "Show all my contacts"
-                </button>
-                <button className="bg-white/60 backdrop-blur-md border border-gray-200 text-gray-600 hover:text-gray-900 hover:bg-white/80 hover:border-[#2b4bee]/30 px-5 py-2.5 rounded-full text-xs font-medium hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 shadow-sm">
-                  <CheckSquare className="w-4 h-4" />
-                  "Create a follow-up task"
-                </button>
-                <button className="bg-white/60 backdrop-blur-md border border-gray-200 text-gray-600 hover:text-gray-900 hover:bg-white/80 hover:border-[#2b4bee]/30 px-5 py-2.5 rounded-full text-xs font-medium hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 shadow-sm">
-                  <BarChart3 className="w-4 h-4" />
-                  "Display analytics dashboard"
-                </button>
-                <button className="bg-white/60 backdrop-blur-md border border-gray-200 text-gray-600 hover:text-gray-900 hover:bg-white/80 hover:border-[#2b4bee]/30 px-5 py-2.5 rounded-full text-xs font-medium hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 shadow-sm">
-                  <MessageSquare className="w-4 h-4" />
-                  "Add Sarah from Tesla"
-                </button>
-              </div>
-            </div>
-            
-            {/* Glass Input */}
-            <div className="fixed bottom-12 left-1/2 -translate-x-1/2 w-full max-w-3xl px-6 z-50">
-              <div className={`${darkMode ? 'bg-slate-800/90 border-slate-600' : 'bg-white/80 border-gray-200'} backdrop-blur-xl border rounded-2xl p-2 flex items-center group focus-within:ring-2 ring-[#2b4bee]/20 transition-all shadow-2xl`}>
-                <div className={`flex items-center justify-center w-12 h-12 ${darkMode ? 'text-slate-500' : 'text-gray-400'}`}>
-                  <Bot className="w-5 h-5" />
-                </div>
-                <input 
-                  className={`flex-grow bg-transparent border-none focus:ring-0 ${darkMode ? 'text-slate-100 placeholder:text-slate-500' : 'text-gray-900 placeholder:text-gray-400'} text-sm py-4 outline-none`}
-                  placeholder="Initialize a command or ask a query..." 
-                  type="text"
-                />
-                <div className="flex items-center gap-2 px-2">
-                  <span className={`hidden sm:block text-[10px] font-bold ${darkMode ? 'text-slate-500 border-slate-600' : 'text-gray-400 border-gray-300'} border rounded px-1.5 py-0.5 tracking-tighter`}>CMD + K</span>
-                  <button className="w-10 h-10 flex items-center justify-center rounded-xl bg-[#2b4bee] text-white hover:bg-[#2b4bee]/90 transition-all shadow-lg">
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-              
-              {/* Status Indicators */}
-              <div className="mt-4 flex justify-center items-center gap-6">
-                <div className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]"></div>
-                  <span className={`text-[10px] uppercase tracking-widest ${darkMode ? 'text-slate-500' : 'text-gray-400'} font-bold`}>Neural Link Active</span>
-                </div>
-                <div className={`w-px h-3 ${darkMode ? 'bg-slate-600' : 'bg-gray-300'}`}></div>
-                <div className="flex items-center gap-2">
-                  <span className={`text-[10px] uppercase tracking-widest ${darkMode ? 'text-slate-500' : 'text-gray-400'} font-bold`}>Protocol v4.2.0</span>
-                </div>
-              </div>
-            </div>
+          <div className="h-[calc(100vh-80px)]">
+            <Chat />
           </div>
         </div>
       </TamboProvider>
