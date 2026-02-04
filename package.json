@@ -23,6 +23,7 @@
     "effect": "^3.0.0",
     "eventsource": "^4.1.0",
     "fast-equals": "^5.4.0",
+    "framer-motion": "^12.31.0",
     "hono": "^4.0.0",
     "lucide-react": "^0.400.0",
     "mysql2": "^3.6.0",

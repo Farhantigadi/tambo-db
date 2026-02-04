@@ -36,5 +36,5 @@ export async function initDb() {
 // Auto-initialize on import
 initDb().catch(console.error);
 
-export { contacts } from "./schema";
-export type { Contact, NewContact } from "./schema";
+export { contacts, tasks, interactions } from "./schema";
+export type { Contact, NewContact, Task, NewTask, Interaction, NewInteraction } from "./schema";
