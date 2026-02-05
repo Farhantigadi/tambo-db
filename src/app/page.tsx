@@ -511,32 +511,23 @@ export default function Home() {
                   <div className="md:w-1/2 grid grid-cols-1 gap-4">
                     <div className="bg-white/10 backdrop-blur-md border border-white/20 p-5 rounded-2xl flex items-center gap-4 group cursor-pointer hover:bg-white/20 transition-colors">
                       <Users className="w-5 h-5" />
-                      <span className="font-medium">"Add John Doe from Microsoft"</span>
+                      <span className="font-medium">Add John Doe from Microsoft</span>
                     </div>
                     <div className="bg-white/10 backdrop-blur-md border border-white/20 p-5 rounded-2xl flex items-center gap-4 group cursor-pointer hover:bg-white/20 transition-colors">
                       <Target className="w-5 h-5" />
-                      <span className="font-medium">"Show me the sales pipeline"</span>
-                    </div>
-                    <div className="bg-white/10 backdrop-blur-md border border-white/20 p-5 rounded-2xl flex items-center gap-4 group cursor-pointer hover:bg-white/20 transition-colors">
-                      <Phone className="w-5 h-5" />
-                      <span className="font-medium">"Create a task to call Sarah"</span>
+                      <span className="font-medium">Add deal for Jane Smith: Product Integration Pilot — $12,500 (qualification)</span>
                     </div>
                     <div className="bg-white/10 backdrop-blur-md border border-white/20 p-5 rounded-2xl flex items-center gap-4 group cursor-pointer hover:bg-white/20 transition-colors">
                       <Calendar className="w-5 h-5" />
-                      <span className="font-medium">"Show team performance dashboard"</span>
+                      <span className="font-medium">Show me deals closing this month</span>
                     </div>
-                    <div className="bg-white/20 backdrop-blur-md border border-white/30 p-5 rounded-2xl">
-                      <div className="flex items-center gap-3 mb-3">
-                        <CheckCircle className="w-5 h-5 text-green-300" />
-                        <span className="font-bold text-green-100">What I Can Help You With</span>
-                      </div>
-                      <ul className="text-sm text-blue-100 space-y-1">
-                        <li>• Manage deals and contacts</li>
-                        <li>• Generate reports and dashboards</li>
-                        <li>• Track team performance</li>
-                        <li>• Create tasks and reminders</li>
-                        <li>• Analyze pipeline data</li>
-                      </ul>
+                    <div className="bg-white/10 backdrop-blur-md border border-white/20 p-5 rounded-2xl flex items-center gap-4 group cursor-pointer hover:bg-white/20 transition-colors">
+                      <Users className="w-5 h-5" />
+                      <span className="font-medium">Assign Alice Brown to Sarah Johnson</span>
+                    </div>
+                    <div className="bg-white/10 backdrop-blur-md border border-white/20 p-5 rounded-2xl flex items-center gap-4 group cursor-pointer hover:bg-white/20 transition-colors">
+                      <Target className="w-5 h-5" />
+                      <span className="font-medium">Show team performance dashboard</span>
                     </div>
                   </div>
                 </div>

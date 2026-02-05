@@ -50,15 +50,37 @@ export async function initDb() {
       )
     `);
 
+    // Create deals table
+    await conn.execute(`
+      CREATE TABLE IF NOT EXISTS deals (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        contact_id INT NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        value DECIMAL(10,2) NOT NULL,
+        stage ENUM('prospecting', 'qualification', 'negotiation', 'closed_won', 'closed_lost') DEFAULT 'prospecting',
+        probability INT DEFAULT 0,
+        expected_close_date DATE,
+        notes TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        FOREIGN KEY (contact_id) REFERENCES contacts(id) ON DELETE CASCADE
+      )
+    `);
+
     // Create interactions table
     await conn.execute(`
       CREATE TABLE IF NOT EXISTS interactions (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        contact_id INT,
+        contact_id INT NOT NULL,
+        deal_id INT,
+        user_id INT,
         type ENUM('call', 'email', 'meeting', 'note') NOT NULL,
         description TEXT,
+        outcome ENUM('positive', 'neutral', 'negative'),
         interaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (contact_id) REFERENCES contacts(id) ON DELETE CASCADE
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (contact_id) REFERENCES contacts(id) ON DELETE CASCADE,
+        FOREIGN KEY (deal_id) REFERENCES deals(id) ON DELETE SET NULL
       )
     `);
 
@@ -73,5 +95,5 @@ export async function initDb() {
 // Auto-initialize on import
 initDb().catch(console.error);
 
-export { contacts, tasks, interactions } from "./schema";
+export { contacts, tasks, interactions, deals, users } from "./schema";
 export type { Contact, NewContact, Task, NewTask, Interaction, NewInteraction } from "./schema";

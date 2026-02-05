@@ -100,23 +100,23 @@ export default function Chat() {
   };
 
   const exampleQueries = [
-    "Add John Doe from Microsoft",
     "Show me the sales pipeline",
-    "Create a task to call Sarah",
-    "Show team performance dashboard",
-    "Move deal to closed-won",
-    "Show pipeline funnel analysis"
+    "Add Microsoft deal worth $50,000",
+    "Show team performance dashboard", 
+    "Create follow-up task for Tesla deal-Product Integration",
+    "Show pipeline funnel analysis",
+    "Add contact Sarah Johnson from Google"
   ];
 
   const proactiveSuggestions = [
-    "Create a new deal for this contact",
-    "Show me the sales pipeline", 
-    "Add a follow-up task",
-    "View team performance",
-    "Show pipeline funnel analysis",
-    "Add interaction note",
-    "Assign deal to team member",
-    "Show activity timeline"
+    "Show me deals closing this month",
+    "Add new deal for Apple", 
+    "Update Microsoft deal to negotiation",
+    "Show activity timeline",
+    "Create task to follow up with Tesla",
+    "Show pipeline conversion rates",
+    "Add contact from enterprise prospect",
+    "View team leaderboard"
   ];
 
   return (

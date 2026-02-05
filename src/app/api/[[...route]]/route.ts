@@ -5,7 +5,7 @@ import { handle } from "hono/vercel";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
 import { like, eq, sql, and, lt } from "drizzle-orm";
-import { db, contacts, tasks, interactions } from "../../../db";
+import { db, contacts, tasks, interactions, deals, users } from "../../../db";
 
 const app = new Hono().basePath("/api");
 
@@ -24,6 +24,16 @@ const createTaskSchema = z.object({
   title: z.string().min(1),
   description: z.string().optional(),
   dueDate: z.string().optional(),
+});
+
+const createDealSchema = z.object({
+  contactId: z.number().min(1),
+  title: z.string().min(1),
+  value: z.number().positive(),
+  stage: z.enum(["prospecting", "qualification", "negotiation", "closed_won", "closed_lost"]).optional(),
+  probability: z.number().min(0).max(100).optional(),
+  expectedCloseDate: z.string().optional(),
+  notes: z.string().optional(),
 });
 
 // Enhanced contacts endpoint
@@ -83,7 +93,113 @@ app.post("/contacts", zValidator("json", createContactSchema), async (c) => {
   }
 });
 
-// Tasks endpoints
+// Deals endpoints
+app.get("/deals", async (c) => {
+  try {
+    const allDeals = await db
+      .select({
+        id: deals.id,
+        title: deals.title,
+        value: deals.value,
+        stage: deals.stage,
+        probability: deals.probability,
+        expectedCloseDate: deals.expectedCloseDate,
+        notes: deals.notes,
+        contactName: contacts.name,
+        contactCompany: contacts.company,
+        createdAt: deals.createdAt,
+      })
+      .from(deals)
+      .leftJoin(contacts, eq(deals.contactId, contacts.id))
+      .orderBy(deals.createdAt);
+
+    return c.json(allDeals);
+  } catch (error) {
+    console.error("DATABASE ERROR:", error);
+    return c.json({ error: "Failed to fetch deals" }, 500);
+  }
+});
+
+app.post("/deals", zValidator("json", createDealSchema), async (c) => {
+  try {
+    const validatedData = c.req.valid("json");
+    
+    // Check if contact exists
+    const contact = await db.select().from(contacts).where(eq(contacts.id, validatedData.contactId)).limit(1);
+    if (!contact.length) {
+      return c.json({ error: "Contact not found" }, 404);
+    }
+
+    await db.insert(deals).values({
+      ...validatedData,
+      stage: validatedData.stage || "prospecting",
+      probability: validatedData.probability || 0,
+      expectedCloseDate: validatedData.expectedCloseDate ? new Date(validatedData.expectedCloseDate) : null,
+    });
+
+    return c.json({
+      success: true,
+      message: `Deal "${validatedData.title}" worth $${validatedData.value} has been created.`,
+    }, 201);
+  } catch (error) {
+    console.error("DATABASE ERROR:", error);
+    return c.json({ error: "Failed to create deal" }, 500);
+  }
+});
+
+app.patch("/deals/:id", zValidator("json", createDealSchema.partial()), async (c) => {
+  try {
+    const id = parseInt(c.req.param("id"));
+    const validatedData = c.req.valid("json");
+
+    await db.update(deals).set(validatedData).where(eq(deals.id, id));
+
+    return c.json({
+      success: true,
+      message: `Deal updated successfully.`,
+    });
+  } catch (error) {
+    console.error("DATABASE ERROR:", error);
+    return c.json({ error: "Failed to update deal" }, 500);
+  }
+});
+
+// Users endpoint
+app.get("/users", async (c) => {
+  try {
+    const allUsers = await db.select().from(users);
+    return c.json(allUsers);
+  } catch (error) {
+    console.error("DATABASE ERROR:", error);
+    return c.json({ error: "Failed to fetch users" }, 500);
+  }
+});
+
+// Activities/Interactions endpoint
+app.get("/activities", async (c) => {
+  try {
+    const activities = await db
+      .select({
+        id: interactions.id,
+        type: interactions.type,
+        description: interactions.description,
+        outcome: interactions.outcome,
+        interactionDate: interactions.interactionDate,
+        contactName: contacts.name,
+        contactCompany: contacts.company,
+        userName: users.name,
+      })
+      .from(interactions)
+      .leftJoin(contacts, eq(interactions.contactId, contacts.id))
+      .leftJoin(users, eq(interactions.userId, users.id))
+      .orderBy(interactions.interactionDate);
+
+    return c.json(activities);
+  } catch (error) {
+    console.error("DATABASE ERROR:", error);
+    return c.json({ error: "Failed to fetch activities" }, 500);
+  }
+});
 app.get("/tasks", async (c) => {
   try {
     const allTasks = await db

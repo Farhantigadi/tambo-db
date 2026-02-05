@@ -104,12 +104,12 @@ const createTaskSchema = z.object({
 });
 
 const addDealSchema = z.object({
-  contact_id: z.number().describe("ID of the contact this deal is associated with"),
+  contactId: z.number().describe("ID of the contact this deal is associated with"),
   title: z.string().describe("Deal title or name"),
   value: z.number().describe("Deal value in dollars"),
   stage: z.enum(["prospecting", "qualification", "negotiation", "closed_won", "closed_lost"]).optional().describe("Deal stage"),
   probability: z.number().min(0).max(100).optional().describe("Win probability percentage"),
-  expected_close_date: z.string().optional().describe("Expected close date in YYYY-MM-DD format"),
+  expectedCloseDate: z.string().optional().describe("Expected close date in YYYY-MM-DD format"),
   notes: z.string().optional().describe("Deal notes"),
 });
 
@@ -119,20 +119,20 @@ const updateDealSchema = z.object({
   value: z.number().optional().describe("Deal value"),
   stage: z.enum(["prospecting", "qualification", "negotiation", "closed_won", "closed_lost"]).optional().describe("Deal stage"),
   probability: z.number().min(0).max(100).optional().describe("Win probability percentage"),
-  expected_close_date: z.string().optional().describe("Expected close date"),
+  expectedCloseDate: z.string().optional().describe("Expected close date"),
   notes: z.string().optional().describe("Deal notes"),
 });
 
 const searchDealsSchema = z.object({
   stage: z.string().optional().describe("Filter by deal stage"),
-  contact_id: z.number().optional().describe("Filter by contact ID"),
-  min_value: z.number().optional().describe("Minimum deal value"),
-  max_value: z.number().optional().describe("Maximum deal value"),
+  contactId: z.number().optional().describe("Filter by contact ID"),
+  minValue: z.number().optional().describe("Minimum deal value"),
+  maxValue: z.number().optional().describe("Maximum deal value"),
 });
 
 const addInteractionSchema = z.object({
-  contact_id: z.number().describe("Contact ID for this interaction"),
-  deal_id: z.number().optional().describe("Deal ID if related to a deal"),
+  contactId: z.number().describe("Contact ID for this interaction"),
+  dealId: z.number().optional().describe("Deal ID if related to a deal"),
   type: z.enum(["call", "email", "meeting", "note"]).describe("Type of interaction"),
   description: z.string().describe("Description of the interaction"),
   outcome: z.enum(["positive", "neutral", "negative"]).optional().describe("Outcome of the interaction"),
@@ -307,7 +307,7 @@ export const tamboTools = [
     description: "Log a new interaction (call, email, meeting, note) with a contact. Use when user wants to record communication or activity.",
     tool: async (params: z.infer<typeof addInteractionSchema>) => {
       try {
-        const response = await fetch("/api/interactions", {
+        const response = await fetch("/api/activities", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(params),
@@ -326,7 +326,7 @@ export const tamboTools = [
     description: "Get recent activities and interactions timeline. Use when user asks about recent activity, interaction history, or communication timeline.",
     tool: async () => {
       try {
-        const response = await fetch("/api/interactions");
+        const response = await fetch(`/api/activities`);
         const activities = await response.json();
         return { success: response.ok, activities };
       } catch (error) {
