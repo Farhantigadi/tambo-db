@@ -654,7 +654,7 @@ export default function Home() {
                   <h4 className="text-lg font-bold mb-4 text-[#2b4bee]">2. API Routes</h4>
                   <p className="text-gray-600 mb-4">Extend <code className="bg-gray-100 px-2 py-1 rounded text-sm">src/app/api/[[...route]]/route.ts</code></p>
                   <div className="bg-gray-900 text-green-400 p-4 rounded-lg text-sm font-mono">
-                    <div>app.get('/deals', async (c) => {`{`}</div>
+                    <div>app.get('/deals', async (c) = {`{`}</div>
                     <div className="ml-4">const deals = await db.select().from(dealsTable);</div>
                     <div className="ml-4">return c.json(deals);</div>
                     <div>{`}`});</div>
@@ -686,7 +686,7 @@ export default function Home() {
                     <div className="ml-6">value: z.number(),</div>
                     <div className="ml-6">stage: z.string()</div>
                     <div className="ml-4">{`}`}),</div>
-                    <div className="ml-4">execute: async (params) => {`{`}...{`}`}</div>
+                    <div className="ml-4">execute: async (params) = {`{`}...{`}`}</div>
                     <div>{`}`}</div>
                   </div>
                 </div>
