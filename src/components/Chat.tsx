@@ -1,14 +1,48 @@
 "use client";
 
 import { useTamboThread, useTamboThreadInput } from "@tambo-ai/react";
-import { Send, Bot, User, Sparkles } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { Send, Bot, User, Sparkles, Mic, MicOff, Lightbulb, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "sonner";
 
 export default function Chat() {
   const { thread } = useTamboThread();
   const { value, setValue, submit, isPending } = useTamboThreadInput();
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [isListening, setIsListening] = useState(false);
+  const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
+  // Initialize speech recognition
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'webkitSpeechRecognition' in window) {
+      const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+      const recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = 'en-US';
+      
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        setValue(transcript);
+        setIsListening(false);
+        toast.success('Voice input captured!');
+      };
+      
+      recognition.onerror = (event) => {
+        console.error('Speech recognition error:', event.error);
+        setIsListening(false);
+        toast.error('Voice input failed. Please try again.');
+      };
+      
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+      
+      setRecognition(recognition);
+    }
+  }, [setValue]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -16,24 +50,77 @@ export default function Chat() {
 
   useEffect(() => {
     scrollToBottom();
+    
+    // Show proactive suggestions after AI responds
+    if (thread.messages.length > 0) {
+      const lastMessage = thread.messages[thread.messages.length - 1];
+      if (lastMessage.role === 'assistant' && lastMessage.renderedComponent) {
+        setTimeout(() => setShowSuggestions(true), 1000);
+      }
+    }
   }, [thread.messages]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (value.trim()) {
+      setShowSuggestions(false);
       submit();
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (value.trim()) {
+        setShowSuggestions(false);
+        submit();
+      }
+    }
+  };
+
+  const handleVoiceInput = () => {
+    if (!recognition) {
+      toast.error('Voice input not supported in this browser');
+      return;
+    }
+    
+    if (isListening) {
+      recognition.stop();
+      setIsListening(false);
+    } else {
+      recognition.start();
+      setIsListening(true);
+      toast.info('Listening... Speak now!');
+    }
+  };
+
+  const handleSuggestionClick = (suggestion: string) => {
+    setValue(suggestion);
+    setShowSuggestions(false);
+  };
+
   const exampleQueries = [
     "Add John Doe from Microsoft",
-    "Show all my contacts",
+    "Show me the sales pipeline",
     "Create a task to call Sarah",
-    "Show analytics dashboard"
+    "Show team performance dashboard",
+    "Move deal to closed-won",
+    "Show pipeline funnel analysis"
+  ];
+
+  const proactiveSuggestions = [
+    "Create a new deal for this contact",
+    "Show me the sales pipeline", 
+    "Add a follow-up task",
+    "View team performance",
+    "Show pipeline funnel analysis",
+    "Add interaction note",
+    "Assign deal to team member",
+    "Show activity timeline"
   ];
 
   return (
-    <div className="flex flex-col h-full bg-gradient-to-b from-white to-gray-50/50">
+    <div className="flex flex-col h-full bg-white dark:bg-gray-900">
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-6 space-y-6">
         {thread.messages.length === 0 && (
@@ -46,16 +133,16 @@ export default function Chat() {
             <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
               <Sparkles className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
               Welcome to your AI CRM Assistant
             </h3>
-            <p className="text-gray-600 mb-8 max-w-md mx-auto leading-relaxed">
-              I can help you manage contacts, create tasks, and provide insights. 
-              Just tell me what you'd like to do in natural language.
+            <p className="text-gray-600 dark:text-gray-300 mb-8 max-w-md mx-auto leading-relaxed">
+              I can help you manage contacts, deals, tasks, and provide insights. 
+              Just tell me what you'd like to do in natural language or use voice input.
             </p>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-lg mx-auto">
-              {exampleQueries.map((query, index) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl mx-auto">
+              {exampleQueries.slice(0, 4).map((query, index) => (
                 <motion.button
                   key={index}
                   onClick={() => setValue(query)}
@@ -244,19 +331,95 @@ export default function Chat() {
         <div ref={messagesEndRef} />
       </div>
 
+      {/* Proactive Suggestions */}
+      <AnimatePresence>
+        {showSuggestions && !isPending && (
+          <motion.div
+            className="px-6 pb-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <Lightbulb className="w-4 h-4 text-blue-600" />
+                  <span className="text-sm font-medium text-blue-900">What would you like to do next?</span>
+                </div>
+                <button
+                  onClick={() => setShowSuggestions(false)}
+                  className="p-1 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {proactiveSuggestions.slice(0, 6).map((suggestion, index) => (
+                  <motion.button
+                    key={index}
+                    onClick={() => handleSuggestionClick(suggestion)}
+                    className="px-3 py-2 text-xs font-medium bg-white text-blue-700 border border-blue-200 rounded-lg hover:bg-blue-50 hover:border-blue-300 transition-all"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.2, delay: index * 0.05 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {suggestion}
+                  </motion.button>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Input */}
-      <div className="p-6 bg-white/80 backdrop-blur-sm border-t border-gray-200/50">
+      <div className="p-6 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
         <form onSubmit={handleSubmit} className="flex gap-4 items-end">
           <div className="flex-1 relative">
             <input
               type="text"
               value={value}
               onChange={(e) => setValue(e.target.value)}
-              placeholder="Ask me anything about your contacts..."
-              className="w-full px-6 py-4 bg-white border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm shadow-sm transition-all duration-200 hover:border-gray-300"
+              onKeyDown={handleKeyDown}
+              placeholder="Ask me anything about your CRM or use voice input..."
+              className="w-full px-6 py-4 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-600 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 shadow-sm transition-all duration-200 hover:border-gray-300 dark:hover:border-gray-500"
               disabled={isPending}
             />
+            {isListening && (
+              <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                <motion.div
+                  className="w-2 h-2 bg-red-500 rounded-full"
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ duration: 0.8, repeat: Infinity }}
+                />
+              </div>
+            )}
           </div>
+          
+          {/* Voice Input Button */}
+          <motion.button
+            type="button"
+            onClick={handleVoiceInput}
+            className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-200 shadow-lg hover:shadow-xl ${
+              isListening 
+                ? 'bg-red-500 hover:bg-red-600' 
+                : 'bg-gray-500 hover:bg-gray-600'
+            }`}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            disabled={isPending}
+          >
+            {isListening ? (
+              <MicOff className="w-5 h-5 text-white" />
+            ) : (
+              <Mic className="w-5 h-5 text-white" />
+            )}
+          </motion.button>
+          
+          {/* Send Button */}
           <motion.button
             type="submit"
             disabled={isPending || !value.trim()}
@@ -268,9 +431,11 @@ export default function Chat() {
           </motion.button>
         </form>
         
-        <p className="text-xs text-gray-500 mt-3 text-center">
-          Try: "Add Sarah from Tesla" • "Show analytics" • "Create a reminder"
-        </p>
+        <div className="mt-3 text-center">
+          <p className="text-xs text-gray-500">
+            Try: "Show me the sales pipeline" • "Add a new deal" • "View team performance" • "Create follow-up task"
+          </p>
+        </div>
       </div>
     </div>
   );
