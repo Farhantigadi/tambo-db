@@ -120,9 +120,9 @@ export default function Chat() {
   ];
 
   return (
-    <div className="flex flex-col h-full bg-white dark:bg-gray-900">
+    <div className="flex flex-col h-full bg-white dark:bg-transparent">
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-6">
+      <div className="flex-1 overflow-y-auto p-6 space-y-6 relative z-10">
         {thread.messages.length === 0 && (
           <motion.div 
             className="text-center py-12"
@@ -146,7 +146,7 @@ export default function Chat() {
                 <motion.button
                   key={index}
                   onClick={() => setValue(query)}
-                  className="p-3 text-left bg-white border border-gray-200 rounded-xl hover:border-blue-300 hover:shadow-md transition-all duration-200 text-sm text-gray-700 hover:text-gray-900"
+                  className="p-3 text-left bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl hover:border-blue-300 dark:hover:border-blue-500/50 hover:shadow-md transition-all duration-200 text-sm text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white backdrop-blur-sm"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
@@ -217,10 +217,10 @@ export default function Chat() {
                 >
                   {!shouldHideMessage && (
                     <motion.div
-                      className={`px-5 py-3 rounded-2xl shadow-sm ${
+                      className={`px-5 py-3 rounded-2xl shadow-sm backdrop-blur-sm ${
                         message.role === "user"
                           ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-br-lg"
-                          : "bg-white border border-gray-200 text-gray-900 rounded-bl-lg"
+                          : "bg-white/90 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-gray-100 rounded-bl-lg"
                       }`}
                       initial={{ scale: 0.9, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
@@ -376,7 +376,7 @@ export default function Chat() {
       </AnimatePresence>
 
       {/* Input */}
-      <div className="p-6 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
+      <div className="p-6 bg-white/95 dark:bg-slate-900/80 border-t border-gray-200 dark:border-white/10 backdrop-blur-xl relative z-10">
         <form onSubmit={handleSubmit} className="flex gap-4 items-end">
           <div className="flex-1 relative">
             <input
@@ -385,7 +385,7 @@ export default function Chat() {
               onChange={(e) => setValue(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Ask me anything about your CRM or use voice input..."
-              className="w-full px-6 py-4 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-600 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 shadow-sm transition-all duration-200 hover:border-gray-300 dark:hover:border-gray-500"
+              className="w-full px-6 py-4 bg-white dark:bg-white/5 border-2 border-gray-200 dark:border-white/10 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent text-sm text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 shadow-sm transition-all duration-200 hover:border-gray-300 dark:hover:border-white/20 backdrop-blur-sm"
               disabled={isPending}
             />
             {isListening && (
@@ -406,7 +406,7 @@ export default function Chat() {
             className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-200 shadow-lg hover:shadow-xl ${
               isListening 
                 ? 'bg-red-500 hover:bg-red-600' 
-                : 'bg-gray-500 hover:bg-gray-600'
+                : 'bg-gray-500 hover:bg-gray-600 dark:bg-white/10 dark:hover:bg-white/20 dark:border dark:border-white/10'
             }`}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -423,7 +423,7 @@ export default function Chat() {
           <motion.button
             type="submit"
             disabled={isPending || !value.trim()}
-            className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 disabled:from-gray-300 disabled:to-gray-300 rounded-2xl flex items-center justify-center transition-all duration-200 shadow-lg hover:shadow-xl"
+            className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 disabled:from-gray-300 disabled:to-gray-300 rounded-2xl flex items-center justify-center transition-all duration-200 shadow-lg hover:shadow-xl hover:shadow-blue-500/30"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -432,7 +432,7 @@ export default function Chat() {
         </form>
         
         <div className="mt-3 text-center">
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-gray-500 dark:text-gray-400">
             Try: "Show me the sales pipeline" • "Add a new deal" • "View team performance" • "Create follow-up task"
           </p>
         </div>

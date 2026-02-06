@@ -9,6 +9,7 @@ import { Toaster } from "sonner";
 import { ThemeProvider } from "next-themes";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import GalaxyBackground from "@/components/GalaxyBackground";
 
 function ChatSkeleton() {
   return (
@@ -124,9 +125,10 @@ export default function ChatPage() {
         components={tamboComponents}
         tools={tamboTools}
       >
-        <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+        <div className="min-h-screen bg-slate-50 dark:dark-galaxy relative">
+          <GalaxyBackground />
           <motion.header 
-            className="flex items-center justify-between bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-b border-slate-200 dark:border-slate-700 px-4 py-3 sticky top-0 z-50 shadow-sm"
+            className="flex items-center justify-between bg-white/95 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200 dark:border-white/10 px-4 py-3 sticky top-0 z-50 shadow-sm"
             initial={{ y: -100 }}
             animate={{ y: 0 }}
             transition={{ duration: 0.6 }}

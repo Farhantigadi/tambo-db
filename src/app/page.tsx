@@ -5,6 +5,7 @@ import { Users, MessageSquare, Target, Calendar, Moon, Sun, DollarSign, Building
 import { motion } from "framer-motion";
 import { Toaster } from "sonner";
 import { ThemeProvider, useTheme } from "next-themes";
+import GalaxyBackground from "@/components/GalaxyBackground";
 import "./globals.css";
 
 function DarkModeToggle() {
@@ -36,14 +37,14 @@ function DarkModeToggle() {
 function Navbar() {
   return (
     <motion.header 
-      className="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-slate-200 dark:border-b-slate-700 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl px-10 py-4 sticky top-0 z-50 shadow-sm"
+      className="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-slate-200 dark:border-b-white/10 bg-white/80 dark:bg-slate-900/30 backdrop-blur-xl px-10 py-4 sticky top-0 z-50 shadow-sm"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6 }}
     >
       <div className="flex items-center gap-4 text-blue-600">
         <div className="size-8">
-          <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center">
+          <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
             <MessageSquare className="w-5 h-5 text-white" />
           </div>
         </div>
@@ -59,7 +60,7 @@ function Navbar() {
           href="https://github.com/Farhantigadi/tambo-db.git"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex min-w-[100px] cursor-pointer items-center justify-center rounded-lg h-10 px-5 bg-gray-100 dark:bg-gray-800 text-black dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 text-sm font-bold transition-colors"
+          className="flex min-w-[100px] cursor-pointer items-center justify-center rounded-lg h-10 px-5 bg-gray-100 dark:bg-white/10 text-black dark:text-white hover:bg-gray-200 dark:hover:bg-white/20 text-sm font-bold transition-colors border dark:border-white/10"
         >
           <Github className="h-4 w-4 mr-2" />
           GitHub
@@ -92,13 +93,14 @@ export default function Home() {
   }
 
   return (
-    <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-      <div className="relative flex h-auto min-h-screen w-full flex-col bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-['Inter',system-ui,sans-serif]">
+    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+      <div className="relative flex h-auto min-h-screen w-full flex-col bg-slate-50 dark:bg-transparent text-slate-900 dark:text-slate-100 font-['Inter',system-ui,sans-serif]">
+        <GalaxyBackground />
         <div className="layout-container flex h-full grow flex-col">
           <Navbar />
         
           <main className="flex flex-col items-center">
-            <section className="w-full relative overflow-hidden pt-24 pb-16 lg:pt-32 lg:pb-24 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-slate-900 dark:via-blue-950 dark:to-indigo-950">
+            <section className="w-full relative overflow-hidden pt-24 pb-16 lg:pt-32 lg:pb-24 bg-transparent">
               <div className="max-w-7xl mx-auto px-6 text-center">
                 <div className="mb-12 max-w-5xl mx-auto space-y-8">
                   <motion.h1 
@@ -141,7 +143,7 @@ export default function Home() {
             <section className="max-w-7xl mx-auto px-6 py-12">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <motion.div 
-                  className="flex flex-1 flex-col gap-3 rounded-2xl p-8 border border-[#dbdde6] dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm"
+                  className="flex flex-1 flex-col gap-3 rounded-2xl p-8 border border-transparent dark:border-white/10 bg-transparent dark:bg-white/5 backdrop-blur-md"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 1.0 }}
@@ -171,7 +173,7 @@ export default function Home() {
                   </div>
                 </motion.div>
                 <motion.div 
-                  className="flex flex-1 flex-col gap-3 rounded-2xl p-8 border border-[#dbdde6] dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm"
+                  className="flex flex-1 flex-col gap-3 rounded-2xl p-8 border border-transparent dark:border-white/10 bg-transparent dark:bg-white/5 backdrop-blur-md"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 1.4 }}
@@ -186,7 +188,7 @@ export default function Home() {
                   </div>
                 </motion.div>
                 <motion.div 
-                  className="flex flex-1 flex-col gap-3 rounded-2xl p-8 border border-[#dbdde6] dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm"
+                  className="flex flex-1 flex-col gap-3 rounded-2xl p-8 border border-transparent dark:border-white/10 bg-transparent dark:bg-white/5 backdrop-blur-md"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 1.6 }}
@@ -203,7 +205,7 @@ export default function Home() {
               </div>
             </section>
 
-            <section id="how-it-works" className="w-full bg-white dark:bg-gray-900 py-20">
+            <section id="how-it-works" className="w-full bg-transparent py-20 relative z-10">
               <div className="max-w-[1200px] mx-auto px-6">
                 <motion.div 
                   className="text-center mb-16"
@@ -414,7 +416,7 @@ export default function Home() {
               </div>
             </section>
 
-            <section id="about" className="w-full bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-800 dark:to-slate-900 py-20">
+            <section id="about" className="w-full bg-transparent py-20 relative z-10">
               <div className="max-w-[1200px] mx-auto px-6">
                 <motion.div 
                   className="text-center mb-16"
@@ -488,9 +490,9 @@ export default function Home() {
               </div>
             </section>
 
-            <div className="w-full max-w-[1200px] px-6 py-20">
+            <div className="w-full max-w-[1200px] px-6 py-20 relative z-10">
               <motion.div 
-                className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-3xl p-12 text-white relative overflow-hidden shadow-2xl"
+                className="bg-gradient-to-r from-blue-600 to-indigo-700 dark:bg-gradient-to-r dark:from-blue-600/20 dark:to-indigo-700/20 dark:backdrop-blur-xl dark:border dark:border-white/10 rounded-3xl p-12 text-white relative overflow-hidden shadow-2xl"
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 2.2 }}
@@ -498,34 +500,34 @@ export default function Home() {
                 <div className="relative z-10 flex flex-col md:flex-row items-center gap-12">
                   <div className="md:w-1/2">
                     <h2 className="text-4xl font-bold mb-6">Ready to Transform Your CRM?</h2>
-                    <p className="text-blue-100 text-lg mb-8 opacity-90">
+                    <p className="text-blue-100 dark:text-gray-300 text-lg mb-8 opacity-90">
                       Stop clicking and start asking. Experience the future of customer relationship management with natural language commands.
                     </p>
                     <button 
                       onClick={() => window.location.href = '/chat'}
-                      className="bg-white text-blue-600 px-8 py-4 rounded-xl font-bold shadow-xl shadow-black/10 hover:scale-105 transition-transform"
+                      className="bg-white text-blue-600 dark:bg-white/90 dark:text-blue-600 px-8 py-4 rounded-xl font-bold shadow-xl shadow-black/10 hover:scale-105 transition-transform"
                     >
                       Start Chatting Now
                     </button>
                   </div>
                   <div className="md:w-1/2 grid grid-cols-1 gap-4">
-                    <div className="bg-white/10 backdrop-blur-md border border-white/20 p-5 rounded-2xl flex items-center gap-4 group cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="bg-white/10 dark:bg-white/5 backdrop-blur-md border border-white/20 dark:border-white/10 p-5 rounded-2xl flex items-center gap-4 group cursor-pointer hover:bg-white/20 dark:hover:bg-white/10 transition-all shadow-lg">
                       <Users className="w-5 h-5" />
                       <span className="font-medium">Add John Doe from Microsoft</span>
                     </div>
-                    <div className="bg-white/10 backdrop-blur-md border border-white/20 p-5 rounded-2xl flex items-center gap-4 group cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="bg-white/10 dark:bg-white/5 backdrop-blur-md border border-white/20 dark:border-white/10 p-5 rounded-2xl flex items-center gap-4 group cursor-pointer hover:bg-white/20 dark:hover:bg-white/10 transition-all shadow-lg">
                       <Target className="w-5 h-5" />
                       <span className="font-medium">Add deal for Jane Smith: Product Integration Pilot — $12,500 (qualification)</span>
                     </div>
-                    <div className="bg-white/10 backdrop-blur-md border border-white/20 p-5 rounded-2xl flex items-center gap-4 group cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="bg-white/10 dark:bg-white/5 backdrop-blur-md border border-white/20 dark:border-white/10 p-5 rounded-2xl flex items-center gap-4 group cursor-pointer hover:bg-white/20 dark:hover:bg-white/10 transition-all shadow-lg">
                       <Calendar className="w-5 h-5" />
                       <span className="font-medium">Show me deals closing this month</span>
                     </div>
-                    <div className="bg-white/10 backdrop-blur-md border border-white/20 p-5 rounded-2xl flex items-center gap-4 group cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="bg-white/10 dark:bg-white/5 backdrop-blur-md border border-white/20 dark:border-white/10 p-5 rounded-2xl flex items-center gap-4 group cursor-pointer hover:bg-white/20 dark:hover:bg-white/10 transition-all shadow-lg">
                       <Users className="w-5 h-5" />
                       <span className="font-medium">Assign Alice Brown to Sarah Johnson</span>
                     </div>
-                    <div className="bg-white/10 backdrop-blur-md border border-white/20 p-5 rounded-2xl flex items-center gap-4 group cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="bg-white/10 dark:bg-white/5 backdrop-blur-md border border-white/20 dark:border-white/10 p-5 rounded-2xl flex items-center gap-4 group cursor-pointer hover:bg-white/20 dark:hover:bg-white/10 transition-all shadow-lg">
                       <Target className="w-5 h-5" />
                       <span className="font-medium">Show team performance dashboard</span>
                     </div>
@@ -535,7 +537,7 @@ export default function Home() {
             </div>
           </main>
 
-          <footer className="w-full bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 py-16">
+          <footer className="w-full bg-transparent border-t border-slate-200 dark:border-white/10 py-16 relative z-10">
             <div className="max-w-[1200px] mx-auto px-6 text-center">
               <p className="text-xs text-slate-400">
                 © 2024 Tambo CRM by <strong>Mohammadfarhan Tigadi</strong> • Enhanced for Hackathon Demo
