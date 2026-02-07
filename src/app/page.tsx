@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Users, MessageSquare, Target, Calendar, Moon, Sun, DollarSign, Building, Zap, Github, Database, Settings, CheckCircle, Phone } from "lucide-react";
+import { Users, MessageSquare, Target, Calendar, Moon, Sun, DollarSign, Building, Zap, Github, Database, Settings } from "lucide-react";
 import { motion } from "framer-motion";
 import { Toaster } from "sonner";
 import { ThemeProvider, useTheme } from "next-themes";
@@ -118,7 +118,7 @@ export default function Home() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.4 }}
                   >
-                    Stop clicking through endless forms. Just ask: "Show me deals closing this month" or "Add Microsoft to the pipeline." Your CRM understands and responds instantly.
+                    Stop clicking through endless forms. Just ask: &quot;Show me deals closing this month&quot; or &quot;Add Microsoft to the pipeline.&quot; Your CRM understands and responds instantly.
                   </motion.p>
                   <motion.div 
                     className="flex flex-col sm:flex-row gap-6 justify-center pt-4"
@@ -158,7 +158,7 @@ export default function Home() {
                   </div>
                 </motion.div>
                 <motion.div 
-                  className="flex flex-1 flex-col gap-3 rounded-2xl p-8 border border-[#dbdde6] dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm"
+                  className="flex flex-1 flex-col gap-3 rounded-2xl p-8 border border-transparent dark:border-white/10 bg-transparent dark:bg-white/5 backdrop-blur-md"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 1.2 }}

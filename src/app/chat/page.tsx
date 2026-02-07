@@ -119,16 +119,16 @@ export default function ChatPage() {
   }
 
   return (
-    <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
       <TamboProvider
         apiKey={apiKey}
         components={tamboComponents}
         tools={tamboTools}
       >
-        <div className="min-h-screen bg-slate-50 dark:dark-galaxy relative">
+        <div className="min-h-screen bg-slate-50 dark:bg-transparent relative">
           <GalaxyBackground />
           <motion.header 
-            className="flex items-center justify-between bg-white/95 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200 dark:border-white/10 px-4 py-3 sticky top-0 z-50 shadow-sm"
+            className="flex items-center justify-between bg-white/80 dark:bg-slate-900/30 backdrop-blur-xl border-b border-slate-200 dark:border-white/10 px-4 py-3 sticky top-0 z-50 shadow-sm"
             initial={{ y: -100 }}
             animate={{ y: 0 }}
             transition={{ duration: 0.6 }}

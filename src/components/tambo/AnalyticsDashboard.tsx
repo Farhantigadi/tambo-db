@@ -92,7 +92,7 @@ export function AnalyticsDashboard({ stats, recentActivity, topCompanies }: Anal
           <div className="bg-white rounded-lg shadow-md p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Top Companies</h3>
             <div className="space-y-3">
-              {topCompanies.slice(0, 5).map((company, index) => (
+              {topCompanies.slice(0, 5).map((company) => (
                 <div key={company.company} className="flex justify-between items-center">
                   <span className="text-gray-600">{company.company}</span>
                   <span className="font-semibold text-gray-900">{company.count}</span>

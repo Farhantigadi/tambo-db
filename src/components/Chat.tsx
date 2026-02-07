@@ -1,7 +1,7 @@
 "use client";
 
 import { useTamboThread, useTamboThreadInput } from "@tambo-ai/react";
-import { Send, Bot, User, Sparkles, Mic, MicOff, Lightbulb, X } from "lucide-react";
+import { Send, Bot, User, Sparkles, Mic, MicOff } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
@@ -12,7 +12,6 @@ export default function Chat() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isListening, setIsListening] = useState(false);
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
-  const [showSuggestions, setShowSuggestions] = useState(false);
 
   // Initialize speech recognition
   useEffect(() => {
@@ -50,20 +49,11 @@ export default function Chat() {
 
   useEffect(() => {
     scrollToBottom();
-    
-    // Show proactive suggestions after AI responds
-    if (thread.messages.length > 0) {
-      const lastMessage = thread.messages[thread.messages.length - 1];
-      if (lastMessage.role === 'assistant' && lastMessage.renderedComponent) {
-        setTimeout(() => setShowSuggestions(true), 1000);
-      }
-    }
   }, [thread.messages]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (value.trim()) {
-      setShowSuggestions(false);
       submit();
     }
   };
@@ -72,7 +62,6 @@ export default function Chat() {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       if (value.trim()) {
-        setShowSuggestions(false);
         submit();
       }
     }
@@ -94,10 +83,7 @@ export default function Chat() {
     }
   };
 
-  const handleSuggestionClick = (suggestion: string) => {
-    setValue(suggestion);
-    setShowSuggestions(false);
-  };
+
 
   const exampleQueries = [
     "Show me the sales pipeline",
@@ -108,19 +94,10 @@ export default function Chat() {
     "Add contact Sarah Johnson from Google"
   ];
 
-  const proactiveSuggestions = [
-    "Show me deals closing this month",
-    "Add new deal for Apple", 
-    "Update Microsoft deal to negotiation",
-    "Show activity timeline",
-    "Create task to follow up with Tesla",
-    "Show pipeline conversion rates",
-    "Add contact from enterprise prospect",
-    "View team leaderboard"
-  ];
+
 
   return (
-    <div className="flex flex-col h-full bg-white dark:bg-transparent">
+    <div className="flex flex-col h-full bg-transparent">
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-6 space-y-6 relative z-10">
         {thread.messages.length === 0 && (
@@ -146,14 +123,14 @@ export default function Chat() {
                 <motion.button
                   key={index}
                   onClick={() => setValue(query)}
-                  className="p-3 text-left bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl hover:border-blue-300 dark:hover:border-blue-500/50 hover:shadow-md transition-all duration-200 text-sm text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white backdrop-blur-sm"
+                  className="p-3 text-left bg-white/80 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl hover:border-blue-300 dark:hover:border-blue-500/50 hover:shadow-md transition-all duration-200 text-sm text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white backdrop-blur-sm"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  "{query}"
+                  &quot;{query}&quot;
                 </motion.button>
               ))}
             </div>
@@ -178,8 +155,16 @@ export default function Chat() {
                 String(message.content).includes('{"error"') ||
                 String(message.content).trim() === "";
 
-            // Skip message if it should be hidden and has no component
-            if (shouldHideMessage && !message.renderedComponent) {
+            // Hide text-only messages if next message has a component
+            const nextMessage = thread.messages[index + 1];
+            const shouldHideTextBeforeComponent = 
+              message.role === 'assistant' && 
+              !message.renderedComponent && 
+              nextMessage?.role === 'assistant' && 
+              nextMessage?.renderedComponent;
+
+            // Skip message if it should be hidden
+            if ((shouldHideMessage && !message.renderedComponent) || shouldHideTextBeforeComponent) {
               return null;
             }
 
@@ -199,13 +184,13 @@ export default function Chat() {
                   className={`w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm ${
                     message.role === "user"
                       ? "bg-gradient-to-r from-blue-500 to-indigo-500"
-                      : "bg-white border-2 border-gray-100"
+                      : "bg-white/80 dark:bg-white/10 border-2 border-gray-100 dark:border-white/20"
                   }`}
                 >
                   {message.role === "user" ? (
                     <User className="w-5 h-5 text-white" />
                   ) : (
-                    <Bot className="w-5 h-5 text-gray-600" />
+                    <Bot className="w-5 h-5 text-gray-600 dark:text-gray-300" />
                   )}
                 </div>
 
@@ -302,10 +287,10 @@ export default function Chat() {
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="w-10 h-10 rounded-2xl bg-white border-2 border-gray-100 flex items-center justify-center shadow-sm">
-                <Bot className="w-5 h-5 text-gray-600" />
+              <div className="w-10 h-10 rounded-2xl bg-white/80 dark:bg-white/10 border-2 border-gray-100 dark:border-white/20 flex items-center justify-center shadow-sm">
+                <Bot className="w-5 h-5 text-gray-600 dark:text-gray-300" />
               </div>
-              <div className="bg-white border border-gray-200 rounded-2xl rounded-bl-lg px-5 py-3 shadow-sm">
+              <div className="bg-white/80 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl rounded-bl-lg px-5 py-3 shadow-sm backdrop-blur-sm">
                 <div className="flex gap-1">
                   <motion.div 
                     className="w-2 h-2 bg-gray-400 rounded-full"
@@ -331,52 +316,8 @@ export default function Chat() {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Proactive Suggestions */}
-      <AnimatePresence>
-        {showSuggestions && !isPending && (
-          <motion.div
-            className="px-6 pb-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <Lightbulb className="w-4 h-4 text-blue-600" />
-                  <span className="text-sm font-medium text-blue-900">What would you like to do next?</span>
-                </div>
-                <button
-                  onClick={() => setShowSuggestions(false)}
-                  className="p-1 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {proactiveSuggestions.slice(0, 6).map((suggestion, index) => (
-                  <motion.button
-                    key={index}
-                    onClick={() => handleSuggestionClick(suggestion)}
-                    className="px-3 py-2 text-xs font-medium bg-white text-blue-700 border border-blue-200 rounded-lg hover:bg-blue-50 hover:border-blue-300 transition-all"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.2, delay: index * 0.05 }}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    {suggestion}
-                  </motion.button>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* Input */}
-      <div className="p-6 bg-white/95 dark:bg-slate-900/80 border-t border-gray-200 dark:border-white/10 backdrop-blur-xl relative z-10">
+      <div className="p-6 bg-white/80 dark:bg-slate-900/30 border-t border-gray-200 dark:border-white/10 backdrop-blur-xl relative z-10">
         <form onSubmit={handleSubmit} className="flex gap-4 items-end">
           <div className="flex-1 relative">
             <input
@@ -433,7 +374,7 @@ export default function Chat() {
         
         <div className="mt-3 text-center">
           <p className="text-xs text-gray-500 dark:text-gray-400">
-            Try: "Show me the sales pipeline" • "Add a new deal" • "View team performance" • "Create follow-up task"
+            Try: &quot;Show me the sales pipeline&quot; • &quot;Add a new deal&quot; • &quot;View team performance&quot; • &quot;Create follow-up task&quot;
           </p>
         </div>
       </div>

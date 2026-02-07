@@ -268,11 +268,22 @@ export const tamboTools = [
     tool: async (params: z.infer<typeof updateDealSchema>) => {
       try {
         const { id, ...updateData } = params;
-        const response = await fetch(`/api/deals/${id}`, {
-          method: "PUT",
+        // Try PATCH first (Hono route)
+        let response = await fetch(`/api/deals/${id}`, {
+          method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(updateData),
         });
+        
+        // If PATCH fails, try PUT with id in body (Next.js route)
+        if (!response.ok) {
+          response = await fetch(`/api/deals`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id, ...updateData }),
+          });
+        }
+        
         const result = await response.json();
         return { success: response.ok, ...result };
       } catch (error) {

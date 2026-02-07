@@ -75,8 +75,8 @@ export function ContactCard({ contacts = [], viewType = "card" }: ContactCardPro
       {safeContacts.map((contact) => (
         <div key={contact.id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
           <div className="flex items-center space-x-4 mb-4">
-            <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
-              {contact.name.charAt(0)}
+             <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
+              {contact?.name?.charAt(0) || '?'}
             </div>
             <div>
               <h3 className="text-lg font-semibold text-gray-900">{contact.name}</h3>

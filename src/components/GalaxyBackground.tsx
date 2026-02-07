@@ -30,7 +30,13 @@ export default function GalaxyBackground() {
       });
     }
 
+    let lastShootingStarTime = Date.now();
+
     function createShootingStar() {
+      const now = Date.now();
+      if (shootingStars.length >= 2 || now - lastShootingStarTime < 120000) return;
+      
+      lastShootingStarTime = now;
       shootingStars.push({
         x: Math.random() * canvas.width * 0.3,
         y: Math.random() * canvas.height * 0.2,
@@ -41,12 +47,13 @@ export default function GalaxyBackground() {
       });
     }
 
-    setInterval(createShootingStar, 6000);
-
     function animate() {
       if (!ctx || !canvas) return;
       
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Try to create shooting star on each frame (throttled internally)
+      createShootingStar();
 
       // Draw twinkling stars
       stars.forEach(star => {
@@ -120,5 +127,5 @@ export default function GalaxyBackground() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-[-1]" />;
+  return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-[-1]" style={{ filter: 'blur(0.3px)' }} />;
 }

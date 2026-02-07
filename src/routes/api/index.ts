@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import { z } from 'zod';
 import { db } from '@/db';
 import { deals, interactions, contacts, users } from '@/db/schema';
-import { eq, and, sql, gte, lte } from 'drizzle-orm';
+import { eq, and, gte, lte } from 'drizzle-orm';
 
 const api = new Hono();
 
@@ -54,9 +54,9 @@ api.post('/deals', async (c) => {
     });
 
     return c.json({ id: newDeal[0].insertId, ...validated }, 201);
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return c.json({ error: error.errors[0].message }, 400);
+  } catch (err) {
+    if (err instanceof z.ZodError) {
+      return c.json({ error: err.errors[0].message }, 400);
     }
     return c.json({ error: 'Failed to create deal' }, 500);
   }
@@ -92,7 +92,7 @@ api.get('/deals', async (c) => {
 
     const result = await query;
     return c.json(result);
-  } catch (error) {
+  } catch {
     return c.json({ error: 'Failed to fetch deals' }, 500);
   }
 });
@@ -113,9 +113,9 @@ api.put('/deals/:id', async (c) => {
     const updated = await db.select().from(deals).where(eq(deals.id, id)).limit(1);
 
     return c.json(updated[0]);
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return c.json({ error: error.errors[0].message }, 400);
+  } catch (err) {
+    if (err instanceof z.ZodError) {
+      return c.json({ error: err.errors[0].message }, 400);
     }
     return c.json({ error: 'Failed to update deal' }, 500);
   }
@@ -145,9 +145,9 @@ api.post('/assign-contact', async (c) => {
     });
 
     return c.json({ success: true, message: `Contact assigned to ${user[0].name}` });
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return c.json({ error: error.errors[0].message }, 400);
+  } catch (err) {
+    if (err instanceof z.ZodError) {
+      return c.json({ error: err.errors[0].message }, 400);
     }
     return c.json({ error: 'Failed to assign contact' }, 500);
   }
@@ -194,7 +194,7 @@ api.get('/advanced-analytics', async (c) => {
       forecast: forecast.toFixed(2),
       totalPipeline: allDeals.reduce((sum, d) => sum + parseFloat(d.value.toString()), 0).toFixed(2),
     });
-  } catch (error) {
+  } catch {
     return c.json({ error: 'Failed to calculate analytics' }, 500);
   }
 });

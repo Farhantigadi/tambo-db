@@ -1,4 +1,4 @@
-import { mysqlTable, int, varchar, text, timestamp, boolean, decimal, mysqlEnum, date, json } from 'drizzle-orm/mysql-core';
+import { mysqlTable, int, varchar, text, timestamp, boolean, decimal, mysqlEnum, date } from 'drizzle-orm/mysql-core';
 import { relations } from 'drizzle-orm';
 
 export const contacts = mysqlTable('contacts', {

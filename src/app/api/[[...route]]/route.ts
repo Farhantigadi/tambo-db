@@ -46,7 +46,7 @@ app.get("/contacts", zValidator("query", z.object({
   try {
     const { query, company, status, inactive_days } = c.req.valid("query");
     
-    let whereConditions = [];
+    const whereConditions = [];
     
     if (query) {
       whereConditions.push(like(contacts.name, `%${query}%`));
@@ -55,7 +55,7 @@ app.get("/contacts", zValidator("query", z.object({
       whereConditions.push(like(contacts.company, `%${company}%`));
     }
     if (status) {
-      whereConditions.push(eq(contacts.status, status as any));
+      whereConditions.push(eq(contacts.status, status as "active" | "inactive" | "prospect" | "customer"));
     }
     if (inactive_days) {
       const daysAgo = new Date();
@@ -164,6 +164,17 @@ app.patch("/deals/:id", zValidator("json", createDealSchema.partial()), async (c
   }
 });
 
+app.delete("/deals/:id", async (c) => {
+  try {
+    const id = parseInt(c.req.param("id"));
+    await db.delete(deals).where(eq(deals.id, id));
+    return c.json({ success: true, message: "Deal deleted successfully" });
+  } catch (error) {
+    console.error("DATABASE ERROR:", error);
+    return c.json({ error: "Failed to delete deal" }, 500);
+  }
+});
+
 // Users endpoint
 app.get("/users", async (c) => {
   try {
@@ -172,6 +183,48 @@ app.get("/users", async (c) => {
   } catch (error) {
     console.error("DATABASE ERROR:", error);
     return c.json({ error: "Failed to fetch users" }, 500);
+  }
+});
+
+app.post("/users", zValidator("json", z.object({
+  name: z.string().min(1),
+  email: z.string().email(),
+  role: z.enum(["rep", "manager", "admin"]).optional(),
+})), async (c) => {
+  try {
+    const validatedData = c.req.valid("json");
+    await db.insert(users).values(validatedData);
+    return c.json({ success: true, message: "User created successfully" }, 201);
+  } catch (error) {
+    console.error("DATABASE ERROR:", error);
+    return c.json({ error: "Failed to create user" }, 500);
+  }
+});
+
+app.patch("/users/:id", zValidator("json", z.object({
+  name: z.string().optional(),
+  email: z.string().email().optional(),
+  role: z.enum(["rep", "manager", "admin"]).optional(),
+})), async (c) => {
+  try {
+    const id = parseInt(c.req.param("id"));
+    const validatedData = c.req.valid("json");
+    await db.update(users).set(validatedData).where(eq(users.id, id));
+    return c.json({ success: true, message: "User updated successfully" });
+  } catch (error) {
+    console.error("DATABASE ERROR:", error);
+    return c.json({ error: "Failed to update user" }, 500);
+  }
+});
+
+app.delete("/users/:id", async (c) => {
+  try {
+    const id = parseInt(c.req.param("id"));
+    await db.delete(users).where(eq(users.id, id));
+    return c.json({ success: true, message: "User deleted successfully" });
+  } catch (error) {
+    console.error("DATABASE ERROR:", error);
+    return c.json({ error: "Failed to delete user" }, 500);
   }
 });
 
@@ -198,6 +251,51 @@ app.get("/activities", async (c) => {
   } catch (error) {
     console.error("DATABASE ERROR:", error);
     return c.json({ error: "Failed to fetch activities" }, 500);
+  }
+});
+
+app.post("/activities", zValidator("json", z.object({
+  contactId: z.number().min(1),
+  dealId: z.number().optional(),
+  userId: z.number().optional(),
+  type: z.enum(["call", "email", "meeting", "note"]),
+  description: z.string().optional(),
+  outcome: z.enum(["positive", "neutral", "negative"]).optional(),
+})), async (c) => {
+  try {
+    const validatedData = c.req.valid("json");
+    await db.insert(interactions).values(validatedData);
+    return c.json({ success: true, message: "Activity created successfully" }, 201);
+  } catch (error) {
+    console.error("DATABASE ERROR:", error);
+    return c.json({ error: "Failed to create activity" }, 500);
+  }
+});
+
+app.patch("/activities/:id", zValidator("json", z.object({
+  type: z.enum(["call", "email", "meeting", "note"]).optional(),
+  description: z.string().optional(),
+  outcome: z.enum(["positive", "neutral", "negative"]).optional(),
+})), async (c) => {
+  try {
+    const id = parseInt(c.req.param("id"));
+    const validatedData = c.req.valid("json");
+    await db.update(interactions).set(validatedData).where(eq(interactions.id, id));
+    return c.json({ success: true, message: "Activity updated successfully" });
+  } catch (error) {
+    console.error("DATABASE ERROR:", error);
+    return c.json({ error: "Failed to update activity" }, 500);
+  }
+});
+
+app.delete("/activities/:id", async (c) => {
+  try {
+    const id = parseInt(c.req.param("id"));
+    await db.delete(interactions).where(eq(interactions.id, id));
+    return c.json({ success: true, message: "Activity deleted successfully" });
+  } catch (error) {
+    console.error("DATABASE ERROR:", error);
+    return c.json({ error: "Failed to delete activity" }, 500);
   }
 });
 app.get("/tasks", async (c) => {
@@ -237,6 +335,34 @@ app.post("/tasks", zValidator("json", createTaskSchema), async (c) => {
   } catch (error) {
     console.error("DATABASE ERROR:", error);
     return c.json({ error: "Failed to create task" }, 500);
+  }
+});
+
+app.patch("/tasks/:id", zValidator("json", createTaskSchema.partial()), async (c) => {
+  try {
+    const id = parseInt(c.req.param("id"));
+    const validatedData = c.req.valid("json");
+
+    await db.update(tasks).set(validatedData).where(eq(tasks.id, id));
+
+    return c.json({
+      success: true,
+      message: `Task updated successfully.`,
+    });
+  } catch (error) {
+    console.error("DATABASE ERROR:", error);
+    return c.json({ error: "Failed to update task" }, 500);
+  }
+});
+
+app.delete("/tasks/:id", async (c) => {
+  try {
+    const id = parseInt(c.req.param("id"));
+    await db.delete(tasks).where(eq(tasks.id, id));
+    return c.json({ success: true, message: "Task deleted successfully" });
+  } catch (error) {
+    console.error("DATABASE ERROR:", error);
+    return c.json({ error: "Failed to delete task" }, 500);
   }
 });
 
@@ -315,3 +441,4 @@ export const GET = handle(app);
 export const POST = handle(app);
 export const PATCH = handle(app);
 export const DELETE = handle(app);
+export const PUT = handle(app);
