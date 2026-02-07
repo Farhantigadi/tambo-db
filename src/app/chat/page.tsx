@@ -124,6 +124,7 @@ export default function ChatPage() {
         apiKey={apiKey}
         components={tamboComponents}
         tools={tamboTools}
+        systemPrompt="You are a helpful CRM assistant. IMPORTANT: When displaying data like contacts, deals, tasks, or analytics, ALWAYS use the appropriate component instead of text. Never list data in text format. Use plain text without markdown formatting (no **bold**, *italic*, etc.) only for brief confirmations or questions. Always prefer visual components over text lists."
       >
         <div className="min-h-screen bg-slate-50 dark:bg-transparent relative">
           <GalaxyBackground />
