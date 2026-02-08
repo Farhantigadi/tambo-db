@@ -6,7 +6,7 @@ export { default as DealPipeline } from "./DealPipeline";
 export { default as DealCard } from "./DealCard";
 export { default as ActivityTimeline } from "./ActivityTimeline";
 export { default as TeamDashboard } from "./TeamDashboard";
-export { default as PipelineFunnel } from "./PipelineFunnel";
+export { PipelineFunnel } from "./PipelineFunnel";
 
 export { ContactListPropsSchema } from "./ContactListSchema";
 export { ContactCardSchema } from "./ContactCardSchema";

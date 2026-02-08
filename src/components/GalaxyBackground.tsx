@@ -39,8 +39,8 @@ export default function GalaxyBackground() {
       
       lastShootingStarTime = now;
       shootingStars.push({
-        x: Math.random() * canvas.width * 0.3,
-        y: Math.random() * canvas.height * 0.2,
+        x: Math.random() * (canvas?.width ?? 800) * 0.3,
+        y: Math.random() * (canvas?.height ?? 600) * 0.2,
         length: Math.random() * 100 + 80,
         speed: Math.random() * 1.5 + 2.5,
         opacity: 1,

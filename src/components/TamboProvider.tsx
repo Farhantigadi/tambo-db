@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { TamboProvider as BaseTamboProvider } from '@tambo/react';
+import { TamboProvider as BaseTamboProvider } from '@tambo-ai/react';
 import { tamboTools } from '@/lib/tambo-tools';
 
 interface TamboProviderProps {
