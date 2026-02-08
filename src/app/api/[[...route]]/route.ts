@@ -78,9 +78,10 @@ app.post("/contacts", zValidator("json", createContactSchema), async (c) => {
   try {
     const validatedData = c.req.valid("json");
     
+    const dateString = new Date().toISOString().split('T')[0];
     await db.insert(contacts).values({
       ...validatedData,
-      lastContactDate: new Date().toISOString().split('T')[0] as any,
+      lastContactDate: dateString,
     });
 
     return c.json({
