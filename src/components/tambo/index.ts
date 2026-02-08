@@ -4,8 +4,10 @@ export { TaskManager } from "./TaskManager";
 export { AnalyticsDashboard } from "./AnalyticsDashboard";
 export { default as DealPipeline } from "./DealPipeline";
 export { default as DealCard } from "./DealCard";
-export { default as ActivityTimeline } from "./ActivityTimeline";
 export { default as PipelineFunnel } from "./PipelineFunnel";
+
+import ActivityTimelineComponent from "./ActivityTimeline";
+export { ActivityTimelineComponent as ActivityTimeline };
 
 import TeamDashboardComponent from "./TeamDashboard";
 export { TeamDashboardComponent as TeamDashboard };
