@@ -131,10 +131,13 @@ app.post("/deals", zValidator("json", createDealSchema), async (c) => {
     }
 
     await db.insert(deals).values({
-      ...validatedData,
+      contactId: validatedData.contactId,
+      title: validatedData.title,
+      value: validatedData.value.toString(),
       stage: validatedData.stage || "prospecting",
       probability: validatedData.probability || 0,
       expectedCloseDate: validatedData.expectedCloseDate ? new Date(validatedData.expectedCloseDate) : null,
+      notes: validatedData.notes,
     });
 
     return c.json({
