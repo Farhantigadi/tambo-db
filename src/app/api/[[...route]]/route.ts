@@ -355,7 +355,13 @@ app.patch("/tasks/:id", zValidator("json", createTaskSchema.partial()), async (c
     const id = parseInt(c.req.param("id"));
     const validatedData = c.req.valid("json");
 
-    await db.update(tasks).set(validatedData).where(eq(tasks.id, id));
+    const updateData: Record<string, string | number | Date | null | undefined> = {};
+    if (validatedData.contactId !== undefined) updateData.contactId = validatedData.contactId;
+    if (validatedData.title !== undefined) updateData.title = validatedData.title;
+    if (validatedData.description !== undefined) updateData.description = validatedData.description;
+    if (validatedData.dueDate !== undefined) updateData.dueDate = validatedData.dueDate ? new Date(validatedData.dueDate) : null;
+
+    await db.update(tasks).set(updateData).where(eq(tasks.id, id));
 
     return c.json({
       success: true,
