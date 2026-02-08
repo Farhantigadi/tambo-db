@@ -155,7 +155,16 @@ app.patch("/deals/:id", zValidator("json", createDealSchema.partial()), async (c
     const id = parseInt(c.req.param("id"));
     const validatedData = c.req.valid("json");
 
-    await db.update(deals).set(validatedData).where(eq(deals.id, id));
+    const updateData: Record<string, string | number | Date | null | undefined> = {};
+    if (validatedData.contactId !== undefined) updateData.contactId = validatedData.contactId;
+    if (validatedData.title !== undefined) updateData.title = validatedData.title;
+    if (validatedData.value !== undefined) updateData.value = validatedData.value.toString();
+    if (validatedData.stage !== undefined) updateData.stage = validatedData.stage;
+    if (validatedData.probability !== undefined) updateData.probability = validatedData.probability;
+    if (validatedData.expectedCloseDate !== undefined) updateData.expectedCloseDate = validatedData.expectedCloseDate ? new Date(validatedData.expectedCloseDate) : null;
+    if (validatedData.notes !== undefined) updateData.notes = validatedData.notes;
+
+    await db.update(deals).set(updateData).where(eq(deals.id, id));
 
     return c.json({
       success: true,
