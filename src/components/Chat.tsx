@@ -113,7 +113,7 @@ export default function Chat() {
             </h3>
             <p className="text-gray-600 dark:text-gray-300 mb-8 max-w-md mx-auto leading-relaxed">
               I can help you manage contacts, deals, tasks, and provide insights. 
-              Just tell me what you'd like to do in natural language or use voice input.
+              Just tell me what you&apos;d like to do in natural language or use voice input.
             </p>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl mx-auto">
