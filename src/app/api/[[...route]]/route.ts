@@ -60,7 +60,7 @@ app.get("/contacts", zValidator("query", z.object({
     if (inactive_days) {
       const daysAgo = new Date();
       daysAgo.setDate(daysAgo.getDate() - parseInt(inactive_days));
-      whereConditions.push(lt(contacts.lastContactDate, daysAgo.toISOString().split('T')[0]));
+      whereConditions.push(lt(contacts.lastContactDate, daysAgo));
     }
     
     const allContacts = whereConditions.length > 0 
