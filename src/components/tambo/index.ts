@@ -4,9 +4,9 @@ export { TaskManager } from "./TaskManager";
 export { AnalyticsDashboard } from "./AnalyticsDashboard";
 export { DealPipeline } from "./DealPipeline";
 export { DealCard } from "./DealCard";
-export { ActivityTimeline } from "./ActivityTimeline";
+export { default as ActivityTimeline } from "./ActivityTimeline";
 export { TeamDashboard } from "./TeamDashboard";
-export { PipelineFunnel } from "./PipelineFunnel";
+export { default as PipelineFunnel } from "./PipelineFunnel";
 
 export { ContactListPropsSchema } from "./ContactListSchema";
 export { ContactCardSchema } from "./ContactCardSchema";
