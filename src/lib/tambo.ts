@@ -96,6 +96,21 @@ const searchContactsSchema = z.object({
   inactive_days: z.string().optional().describe("Find contacts not contacted in X days"),
 });
 
+const updateContactSchema = z.object({
+  id: z.number().describe("Contact ID to update"),
+  name: z.string().optional().describe("Full name of the contact"),
+  email: z.string().email().optional().describe("Email address"),
+  phone: z.string().optional().describe("Phone number"),
+  company: z.string().optional().describe("Company name"),
+  position: z.string().optional().describe("Job title or position"),
+  notes: z.string().optional().describe("Additional notes"),
+  status: z.enum(["active", "inactive", "prospect", "customer"]).optional().describe("Contact status"),
+});
+
+const deleteContactSchema = z.object({
+  id: z.number().describe("Contact ID to delete"),
+});
+
 const createTaskSchema = z.object({
   contactId: z.number().optional().describe("ID of related contact"),
   title: z.string().describe("Task title or description"),
@@ -181,6 +196,44 @@ export const tamboTools = [
     },
     inputSchema: searchContactsSchema,
     outputSchema: z.object({ success: z.boolean(), contacts: z.array(z.any()).optional(), error: z.string().optional() }),
+  },
+  {
+    name: "update_contact",
+    description: "Update an existing contact's information including name, email, company, phone, position, notes, or status. Use when user wants to edit or rename a contact.",
+    tool: async (params: z.infer<typeof updateContactSchema>) => {
+      try {
+        const { id, ...updateData } = params;
+        const response = await fetch(`/api/contacts/${id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updateData),
+        });
+        const result = await response.json();
+        return { success: response.ok, ...result };
+      } catch (error) {
+        return { success: false, error: "Failed to update contact" };
+      }
+    },
+    inputSchema: updateContactSchema,
+    outputSchema: z.object({ success: z.boolean(), message: z.string().optional(), error: z.string().optional() }),
+  },
+  {
+    name: "delete_contact",
+    description: "Permanently delete a contact from the database. Use when user explicitly wants to remove a contact. This will also delete all related deals, tasks, and interactions.",
+    tool: async (params: z.infer<typeof deleteContactSchema>) => {
+      try {
+        const { id } = params;
+        const response = await fetch(`/api/contacts/${id}`, {
+          method: "DELETE",
+        });
+        const result = await response.json();
+        return { success: response.ok, ...result };
+      } catch (error) {
+        return { success: false, error: "Failed to delete contact" };
+      }
+    },
+    inputSchema: deleteContactSchema,
+    outputSchema: z.object({ success: z.boolean(), message: z.string().optional(), error: z.string().optional() }),
   },
   {
     name: "create_task",

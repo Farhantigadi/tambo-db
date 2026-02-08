@@ -109,8 +109,8 @@ export default function Home() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.2 }}
                   >
-                    Talk to Your CRM<br />
-                    <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">Like a Human</span>
+                    Stop clicking, Start asking.<br />
+                    <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent"></span>
                   </motion.h1>
                   <motion.p 
                     className="text-xl md:text-2xl text-slate-600 dark:text-slate-300 max-w-4xl mx-auto leading-relaxed font-medium"
@@ -118,7 +118,7 @@ export default function Home() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.4 }}
                   >
-                    Stop clicking through endless forms. Just ask: &quot;Show me deals closing this month&quot; or &quot;Add Microsoft to the pipeline.&quot; Your CRM understands and responds instantly.
+                   A CRM that understands natural language and works the way you do.
                   </motion.p>
                   <motion.div 
                     className="flex flex-col sm:flex-row gap-6 justify-center pt-4"
@@ -132,7 +132,10 @@ export default function Home() {
                     >
                       <span className="truncate">Start Chatting</span>
                     </button>
-                    <button className="border-2 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 px-10 py-4 rounded-2xl font-bold text-lg hover:bg-white dark:hover:bg-slate-800 hover:border-slate-400 dark:hover:border-slate-500 transition-all duration-200 shadow-lg">
+                    <button 
+                      onClick={() => window.open('https://youtu.be/t79AIOkubCs', '_blank')}
+                      className="border-2 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 px-10 py-4 rounded-2xl font-bold text-lg hover:bg-white dark:hover:bg-slate-800 hover:border-slate-400 dark:hover:border-slate-500 transition-all duration-200 shadow-lg"
+                    >
                       Watch Demo
                     </button>
                   </motion.div>
@@ -215,7 +218,7 @@ export default function Home() {
                 >
                   <h2 className="text-black dark:text-white text-4xl font-bold mb-6">How It Works</h2>
                   <p className="text-gray-600 dark:text-gray-300 text-lg max-w-3xl mx-auto">
-                    Transform your business with AI that understands your workflow. Built for real companies managing real deals.
+                    This is a working demo with real data. The numbers you see are actual deals stored in a MySQL database. You can add, update, and manage your own data through natural language.
                   </p>
                 </motion.div>
 
@@ -225,7 +228,7 @@ export default function Home() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.3, delay: 0.3 }}
                   >
-                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Real Business Results</h3>
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Demo Data (You Can Change This)</h3>
                     <div className="space-y-6">
                       <div className="flex items-start gap-4">
                         <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -233,7 +236,7 @@ export default function Home() {
                         </div>
                         <div>
                           <h4 className="font-semibold text-gray-900 dark:text-white mb-2">$172,500 Pipeline Value</h4>
-                          <p className="text-gray-600 dark:text-gray-300 text-sm">4 active deals from Microsoft, Tesla, Google, and Apple. Real companies, real opportunities.</p>
+                          <p className="text-gray-600 dark:text-gray-300 text-sm">Sample deals from Microsoft, Tesla, Google, and Apple. These are placeholder examples - replace with your actual customers and deal values.</p>
                         </div>
                       </div>
                       <div className="flex items-start gap-4">
@@ -242,7 +245,7 @@ export default function Home() {
                         </div>
                         <div>
                           <h4 className="font-semibold text-gray-900 dark:text-white mb-2">73% Win Rate</h4>
-                          <p className="text-gray-600 dark:text-gray-300 text-sm">Calculated from actual closed deals. AI helps identify high-probability opportunities.</p>
+                          <p className="text-gray-600 dark:text-gray-300 text-sm">Calculated from demo closed deals. Once you add your real sales data, this will reflect your actual win rate.</p>
                         </div>
                       </div>
                       <div className="flex items-start gap-4">
@@ -251,7 +254,7 @@ export default function Home() {
                         </div>
                         <div>
                           <h4 className="font-semibold text-gray-900 dark:text-white mb-2">2 Sales Reps</h4>
-                          <p className="text-gray-600 dark:text-gray-300 text-sm">Team performance tracking with individual metrics and leaderboards.</p>
+                          <p className="text-gray-600 dark:text-gray-300 text-sm">Demo users Sarah and Mike. Add your actual sales team members to track their individual performance.</p>
                         </div>
                       </div>
                     </div>
@@ -262,7 +265,7 @@ export default function Home() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.3, delay: 0.4 }}
                   >
-                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Live Demo Data</h3>
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Sample Deals (Connected to MySQL)</h3>
                     <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 space-y-4">
                       <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-700">
                         <span className="text-sm font-medium text-gray-900 dark:text-white">Enterprise SaaS License</span>
@@ -281,7 +284,7 @@ export default function Home() {
                         <span className="text-sm font-bold text-blue-600">$35,000</span>
                       </div>
                       <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-                        <p className="text-xs text-gray-500 dark:text-gray-400">✓ Connected to live MySQL database</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">✓ These are demo deals. You can delete them and add your own through the chat interface or directly in the database.</p>
                       </div>
                     </div>
                   </motion.div>
@@ -293,34 +296,34 @@ export default function Home() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: 0.5 }}
                 >
-                  <h3 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">Implement in Your Business</h3>
+                  <h3 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">Customize for Your Business</h3>
                   
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
                     <div className="text-center">
                       <div className="w-16 h-16 bg-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
                         <span className="text-2xl font-bold text-white">1</span>
                       </div>
-                      <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Clone & Configure</h4>
+                      <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Clone Repository</h4>
                       <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                        Fork the repository, add your database credentials, and get your Tambo API key. Takes 5 minutes.
+                        Fork from GitHub, run npm install, add your MySQL credentials to .env.local, and get a free Tambo API key.
                       </p>
                     </div>
                     <div className="text-center">
                       <div className="w-16 h-16 bg-green-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
                         <span className="text-2xl font-bold text-white">2</span>
                       </div>
-                      <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Import Your Data</h4>
+                      <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Modify Database Schema</h4>
                       <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                        Use the provided SQL schema or connect your existing CRM database. Supports MySQL, PostgreSQL.
+                        Edit src/db/schema.ts to add new tables or fields. Run drizzle-kit push to update your database. The AI automatically adapts to your schema changes.
                       </p>
                     </div>
                     <div className="text-center">
                       <div className="w-16 h-16 bg-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
                         <span className="text-2xl font-bold text-white">3</span>
                       </div>
-                      <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Start Talking</h4>
+                      <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Create Custom Tools</h4>
                       <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                        Train your team on natural language commands. No more clicking through menus or forms.
+                        Add new AI tools in src/lib/tambo.ts. Define what data to fetch and which component to render. The AI will understand and use your custom tools.
                       </p>
                     </div>
                   </div>
@@ -387,8 +390,7 @@ export default function Home() {
                       </div>
                     </div>
                     <p className="text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto mb-8">
-                      <strong>This isn't just a demo.</strong> You can modify every piece of data, add your own deals, contacts, and business rules. 
-                      The AI will understand and work with YOUR information, not just sample data.
+                      <strong>Fully customizable:</strong> This isn't locked to our demo data. Modify the database schema, add new tables (invoices, projects, tickets), change field names, or completely redesign the data structure. The AI adapts to whatever you build.
                     </p>
                     <h4 className="text-2xl font-bold text-slate-900 dark:text-white mb-8">Why Businesses Choose This</h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

@@ -1,0 +1,9 @@
+Components to update for dark mode:
+1. ContactCard.tsx
+2. TaskManager.tsx  
+3. ActivityTimeline.tsx
+4. DealCard.tsx
+5. DealPipeline.tsx (already has some dark mode)
+6. TeamDashboard.tsx (already has some dark mode)
+7. PipelineFunnel.tsx (already has some dark mode)
+8. AnalyticsDashboard.tsx (already has some dark mode)

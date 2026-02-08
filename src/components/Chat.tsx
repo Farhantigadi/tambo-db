@@ -87,11 +87,9 @@ export default function Chat() {
 
   const exampleQueries = [
     "Show me the sales pipeline",
-    "Add Microsoft deal worth $50,000",
     "Show team performance dashboard", 
-    "Create follow-up task for Tesla deal-Product Integration",
     "Show pipeline funnel analysis",
-    "Add contact Sarah Johnson from Google"
+    "Add contact Sarah John from BlackRock"
   ];
 
 
@@ -256,7 +254,7 @@ export default function Chat() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 0.2 }}
                     >
-                      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+                      <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-white/10 shadow-sm overflow-hidden">
                         {message.renderedComponent}
                       </div>
                     </motion.div>

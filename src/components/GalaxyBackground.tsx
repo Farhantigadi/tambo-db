@@ -15,17 +15,18 @@ export default function GalaxyBackground() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const stars: { x: number; y: number; size: number; opacity: number; speed: number; twinkleSpeed: number }[] = [];
+    const stars: { x: number; y: number; size: number; opacity: number; vx: number; vy: number; twinkleSpeed: number }[] = [];
     const shootingStars: { x: number; y: number; length: number; speed: number; opacity: number; glow: number }[] = [];
 
-    // Create twinkling stars
+    // Create twinkling and drifting stars
     for (let i = 0; i < 300; i++) {
       stars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         size: Math.random() * 1.5 + 0.5,
         opacity: Math.random() * 0.5 + 0.3,
-        speed: 0,
+        vx: (Math.random() - 0.5) * 0.2,
+        vy: (Math.random() - 0.5) * 0.2,
         twinkleSpeed: Math.random() * 0.015 + 0.005
       });
     }
@@ -55,10 +56,18 @@ export default function GalaxyBackground() {
       // Try to create shooting star on each frame (throttled internally)
       createShootingStar();
 
-      // Draw twinkling stars
+      // Draw drifting and twinkling stars
       stars.forEach(star => {
         star.opacity += star.twinkleSpeed;
         if (star.opacity > 0.9 || star.opacity < 0.2) star.twinkleSpeed *= -1;
+
+        star.x += star.vx;
+        star.y += star.vy;
+
+        if (star.x < 0) star.x = canvas.width;
+        if (star.x > canvas.width) star.x = 0;
+        if (star.y < 0) star.y = canvas.height;
+        if (star.y > canvas.height) star.y = 0;
 
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);

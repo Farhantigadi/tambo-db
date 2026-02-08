@@ -49,6 +49,14 @@ Thumbs.db
 *.swp
 *.swo
 
+# Architecture Visualization (Local Development)
+index.html
+style.css
+ARCHITECTURE_GUIDE.md
+
+# Database Setup
+database-setup.sql
+
 # TypeScript
 *.tsbuildinfo
 

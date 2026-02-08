@@ -5,10 +5,10 @@ export function TaskManager({ tasks = [], showCompleted = false }: TaskManagerPr
   const filteredTasks = showCompleted ? safeTasks : safeTasks.filter(task => !task.completed);
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className="bg-white dark:bg-slate-800/90 rounded-lg shadow-md border dark:border-white/10 p-6 backdrop-blur-sm">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-semibold text-gray-900">Tasks & Reminders</h2>
-        <span className="text-sm text-gray-500">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Tasks & Reminders</h2>
+        <span className="text-sm text-gray-500 dark:text-gray-400">
           {filteredTasks.length} {showCompleted ? 'total' : 'pending'} tasks
         </span>
       </div>
@@ -16,7 +16,7 @@ export function TaskManager({ tasks = [], showCompleted = false }: TaskManagerPr
       <div className="space-y-4">
         {filteredTasks.map((task) => (
           <div key={task.id} className={`p-4 border rounded-lg ${
-            task.completed ? 'bg-gray-50 border-gray-200' : 'bg-white border-gray-300'
+            task.completed ? 'bg-gray-50 dark:bg-slate-700/30 border-gray-200 dark:border-white/10' : 'bg-white dark:bg-slate-700/50 border-gray-300 dark:border-white/20'
           }`}>
             <div className="flex items-start justify-between">
               <div className="flex items-start space-x-3">
@@ -32,16 +32,16 @@ export function TaskManager({ tasks = [], showCompleted = false }: TaskManagerPr
                   )}
                 </div>
                 <div className="flex-1">
-                  <h3 className={`font-medium ${task.completed ? 'text-gray-500 line-through' : 'text-gray-900'}`}>
+                  <h3 className={`font-medium ${task.completed ? 'text-gray-500 dark:text-gray-400 line-through' : 'text-gray-900 dark:text-white'}`}>
                     {task.title}
                   </h3>
                   {task.description && (
-                    <p className={`text-sm mt-1 ${task.completed ? 'text-gray-400' : 'text-gray-600'}`}>
+                    <p className={`text-sm mt-1 ${task.completed ? 'text-gray-400 dark:text-gray-500' : 'text-gray-600 dark:text-gray-300'}`}>
                       {task.description}
                     </p>
                   )}
                   {task.contactName && (
-                    <p className="text-sm text-blue-600 mt-1">
+                    <p className="text-sm text-blue-600 dark:text-blue-400 mt-1">
                       Related to: {task.contactName}
                     </p>
                   )}
@@ -51,10 +51,10 @@ export function TaskManager({ tasks = [], showCompleted = false }: TaskManagerPr
               {task.dueDate && (
                 <div className={`text-sm ${
                   task.completed 
-                    ? 'text-gray-400' 
+                    ? 'text-gray-400 dark:text-gray-500' 
                     : new Date(task.dueDate) < new Date() 
-                      ? 'text-red-600 font-medium' 
-                      : 'text-gray-600'
+                      ? 'text-red-600 dark:text-red-400 font-medium' 
+                      : 'text-gray-600 dark:text-gray-400'
                 }`}>
                   Due: {new Date(task.dueDate).toLocaleDateString()}
                 </div>
@@ -64,7 +64,7 @@ export function TaskManager({ tasks = [], showCompleted = false }: TaskManagerPr
         ))}
         
         {filteredTasks.length === 0 && (
-          <div className="text-center py-8 text-gray-500">
+          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
             <p>No {showCompleted ? '' : 'pending '}tasks found</p>
           </div>
         )}
