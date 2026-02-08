@@ -63,8 +63,8 @@ export function PipelineFunnel({
     return null;
   };
 
-  const CustomLabel = (props: any) => {
-    const { x, y, width, height, name } = props;
+  const CustomLabel = (props: unknown) => {
+    const { x, y, width, height, name } = props as { x?: number; y?: number; width?: number; height?: number; name?: string };
     if (typeof x !== 'number' || typeof y !== 'number' || typeof width !== 'number' || typeof height !== 'number') {
       return null;
     }

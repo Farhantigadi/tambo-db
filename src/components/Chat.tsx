@@ -16,7 +16,7 @@ export default function Chat() {
   // Initialize speech recognition
   useEffect(() => {
     if (typeof window !== 'undefined' && 'webkitSpeechRecognition' in window) {
-      const SpeechRecognition = (window.webkitSpeechRecognition || window.SpeechRecognition) as any;
+      const SpeechRecognition = (window.webkitSpeechRecognition || window.SpeechRecognition) as typeof window.SpeechRecognition;
       const recognition = new SpeechRecognition() as SpeechRecognition;
       recognition.continuous = false;
       recognition.interimResults = false;
