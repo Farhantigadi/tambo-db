@@ -92,8 +92,10 @@ export async function initDb() {
   }
 }
 
-// Auto-initialize on import
-initDb().catch(console.error);
+// Auto-initialize on import (only in runtime, not during build)
+if (typeof window === 'undefined' && process.env.NODE_ENV !== 'production') {
+  initDb().catch(console.error);
+}
 
 export { contacts, tasks, interactions, deals, users } from "./schema";
 export type { Contact, NewContact, Task, NewTask, Interaction, NewInteraction } from "./schema";
