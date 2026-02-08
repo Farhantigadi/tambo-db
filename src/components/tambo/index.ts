@@ -1,19 +1,12 @@
-import ContactListComponent from "./ContactList";
-import DealPipelineComponent from "./DealPipeline";
-import DealCardComponent from "./DealCard";
-import PipelineFunnelComponent from "./PipelineFunnel";
-import ActivityTimelineComponent from "./ActivityTimeline";
-import TeamDashboardComponent from "./TeamDashboard";
-
-export { ContactListComponent as ContactList };
+export { default as ContactList } from "./ContactList";
 export { ContactCard } from "./ContactCard";
 export { TaskManager } from "./TaskManager";
 export { AnalyticsDashboard } from "./AnalyticsDashboard";
-export { DealPipelineComponent as DealPipeline };
-export { DealCardComponent as DealCard };
-export { PipelineFunnelComponent as PipelineFunnel };
-export { ActivityTimelineComponent as ActivityTimeline };
-export { TeamDashboardComponent as TeamDashboard };
+export { default as DealPipeline } from "./DealPipeline";
+export { default as DealCard } from "./DealCard";
+export { default as PipelineFunnel } from "./PipelineFunnel";
+export { default as ActivityTimeline } from "./ActivityTimeline";
+export { default as TeamDashboard } from "./TeamDashboard";
 
 export { ContactListPropsSchema } from "./ContactListSchema";
 export { ContactCardSchema } from "./ContactCardSchema";
