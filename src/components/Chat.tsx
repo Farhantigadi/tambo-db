@@ -128,7 +128,7 @@ export default function Chat() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  &quot;{query}&quot;
+                  &ldquo;{query}&rdquo;
                 </motion.button>
               ))}
             </div>
@@ -372,7 +372,7 @@ export default function Chat() {
         
         <div className="mt-3 text-center">
           <p className="text-xs text-gray-500 dark:text-gray-400">
-            Try: &quot;Show me the sales pipeline&quot; • &quot;Add a new deal&quot; • &quot;View team performance&quot; • &quot;Create follow-up task&quot;
+            Try: &ldquo;Show me the sales pipeline&rdquo; • &ldquo;Add a new deal&rdquo; • &ldquo;View team performance&rdquo; • &ldquo;Create follow-up task&rdquo;
           </p>
         </div>
       </div>

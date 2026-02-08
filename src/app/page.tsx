@@ -385,12 +385,12 @@ export default function Home() {
                             <MessageSquare className="w-8 h-8 text-purple-600" />
                           </div>
                           <h5 className="font-bold text-slate-900 dark:text-white mb-3">Your Language</h5>
-                          <p className="text-sm text-slate-600 dark:text-slate-300">Train the AI with your business terminology. "Hot leads", "enterprise deals", "Q4 targets" - it learns your language.</p>
+                          <p className="text-sm text-slate-600 dark:text-slate-300">Train the AI with your business terminology. &ldquo;Hot leads&rdquo;, &ldquo;enterprise deals&rdquo;, &ldquo;Q4 targets&rdquo; - it learns your language.</p>
                         </div>
                       </div>
                     </div>
                     <p className="text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto mb-8">
-                      <strong>Fully customizable:</strong> This isn't locked to our demo data. Modify the database schema, add new tables (invoices, projects, tickets), change field names, or completely redesign the data structure. The AI adapts to whatever you build.
+                      <strong>Fully customizable:</strong> This isn&apos;t locked to our demo data. Modify the database schema, add new tables (invoices, projects, tickets), change field names, or completely redesign the data structure. The AI adapts to whatever you build.
                     </p>
                     <h4 className="text-2xl font-bold text-slate-900 dark:text-white mb-8">Why Businesses Choose This</h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -426,7 +426,7 @@ export default function Home() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: 0.6 }}
                 >
-                  <h2 className="text-slate-900 dark:text-white text-4xl font-bold mb-6">The Problem We're Solving</h2>
+                  <h2 className="text-slate-900 dark:text-white text-4xl font-bold mb-6">The Problem We&apos;re Solving</h2>
                   <p className="text-slate-600 dark:text-slate-300 text-lg max-w-3xl mx-auto">
                     Traditional CRMs are broken. Sales teams spend 65% of their time on data entry instead of selling.
                   </p>
@@ -474,7 +474,7 @@ export default function Home() {
                         </div>
                         <div>
                           <h4 className="font-semibold text-slate-900 dark:text-white mb-2">Natural Language Interface</h4>
-                          <p className="text-slate-600 dark:text-slate-300 text-sm">Just say "Move Microsoft deal to closed-won" and it happens. No forms, no clicking.</p>
+                          <p className="text-slate-600 dark:text-slate-300 text-sm">Just say &ldquo;Move Microsoft deal to closed-won&rdquo; and it happens. No forms, no clicking.</p>
                         </div>
                       </div>
                       <div className="flex items-start gap-4">

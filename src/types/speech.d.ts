@@ -39,7 +39,7 @@ interface SpeechRecognitionErrorEvent {
   error: string;
 }
 
-declare var SpeechRecognition: {
+const SpeechRecognition: {
   prototype: SpeechRecognition;
   new(): SpeechRecognition;
 };
