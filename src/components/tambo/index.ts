@@ -5,8 +5,10 @@ export { AnalyticsDashboard } from "./AnalyticsDashboard";
 export { default as DealPipeline } from "./DealPipeline";
 export { default as DealCard } from "./DealCard";
 export { default as ActivityTimeline } from "./ActivityTimeline";
-export { default as TeamDashboard } from "./TeamDashboard";
-export { PipelineFunnel } from "./PipelineFunnel";
+export { default as PipelineFunnel } from "./PipelineFunnel";
+
+import TeamDashboardComponent from "./TeamDashboard";
+export { TeamDashboardComponent as TeamDashboard };
 
 export { ContactListPropsSchema } from "./ContactListSchema";
 export { ContactCardSchema } from "./ContactCardSchema";
